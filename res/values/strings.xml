@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Shopping list</string>
+    <string name="itemdetails_name">Item details</string>
+    <string name="menu_newitem">Create new item</string>
+    <string name="menu_savelist">Save shopping list</string>
+    <string name="menu_clearlist">Clear list</string>
+    <string name="context_menu_title">Select action</string>
+</resources>
