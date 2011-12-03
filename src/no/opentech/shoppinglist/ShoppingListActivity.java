@@ -145,6 +145,7 @@ public class ShoppingListActivity extends ListActivity
 			public void onClick(DialogInterface dialog, int whichButton) {
 				String newItem = input.getText().toString().trim();
                 if(!newItem.equals("")) shoppingItems.add(new Item(newItem));
+                ((ItemAdapter) getListAdapter()).notifyDataSetChanged();
 			}
 		});
 
