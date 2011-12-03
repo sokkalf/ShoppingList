@@ -42,6 +42,7 @@ public class ShoppingListActivity extends ListActivity
         shoppingItems.add(new Item("Pizzasaus"));
         shoppingItems.add(new Item("Kylling"));
         shoppingItems.add(new Item("Kjeks"));
+        shoppingItems.add(new Item("Mel"));
 
 
         shoppingList = new ArrayList<Item>();
