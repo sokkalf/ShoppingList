@@ -115,7 +115,6 @@ public class ItemListActivity extends ListActivity
                 Intent intent = new Intent(this, ItemDetailsActivity.class);
                 intent.putExtra("item", (Serializable)selectedItem);
                 this.startActivity(intent);
-                // TODO: show details page
                 break;
         }
         return true;
@@ -130,7 +129,9 @@ public class ItemListActivity extends ListActivity
                 Log.d(TAG, "adding : " + item);
             }
         }
-        // TODO: go to new page
+        Intent intent = new Intent(this, ShoppingListActivity.class);
+        intent.putExtra("shoppinglist", (Serializable)shoppingList);
+        this.startActivity(intent);
     }
 
     /* show dialog with input box, for adding item to shopping list */
