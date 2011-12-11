@@ -21,7 +21,7 @@ import java.util.List;
  * Date: 08.04.11
  * Time: 20:45
  */
-public class ShoppingListActivity extends ListActivity
+public class ItemListActivity extends ListActivity
 {
     private static final String TAG = "ShoppingList";
 
@@ -57,8 +57,7 @@ public class ShoppingListActivity extends ListActivity
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // toggle checked
                 Item selectedItem = shoppingItems.get(position);
-                if(selectedItem.isChecked()) selectedItem.setChecked(false);
-                else selectedItem.setChecked(true);
+                selectedItem.setChecked(!selectedItem.isChecked());
                 ((ItemAdapter)getListAdapter()).notifyDataSetChanged();
             }
         });
