@@ -12,6 +12,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 /* helper functions for SQLite */
 
+// TODO: Add database for items
+
 public class DBHelper extends SQLiteOpenHelper {
     static final int DATABASE_VERSION = 1;
 

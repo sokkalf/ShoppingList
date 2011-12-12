@@ -16,15 +16,17 @@ public final class R {
     }
     public static final class id {
         public static final int LinearLayout01=0x7f060000;
-        public static final int clearlist=0x7f060009;
+        public static final int clearlist=0x7f06000b;
         public static final int itemcreateddate=0x7f060003;
         public static final int itemname=0x7f060001;
-        public static final int itemtext=0x7f060004;
+        public static final int itemtext=0x7f060006;
         public static final int linearLayout1=0x7f060002;
-        public static final int newitem=0x7f060007;
-        public static final int removeitem=0x7f060005;
-        public static final int savelist=0x7f060008;
-        public static final int showitemdetails=0x7f060006;
+        public static final int linearlayout2=0x7f060004;
+        public static final int newitem=0x7f060009;
+        public static final int removeitem=0x7f060007;
+        public static final int savelist=0x7f06000a;
+        public static final int showitemdetails=0x7f060008;
+        public static final int usagecounter=0x7f060005;
     }
     public static final class layout {
         public static final int item_details=0x7f030000;

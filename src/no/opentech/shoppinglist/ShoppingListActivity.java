@@ -32,7 +32,7 @@ public class ShoppingListActivity extends ListActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // toggle checked
                 Item selectedItem = shoppingList.get(position);
-                Log.i("ShoppingList", "selected item : " + selectedItem.getName() + " , position : " + position + " , firstSeen : " + selectedItem.getFirstSeen());
+                Log.d("ShoppingList", "selected item : " + selectedItem.getName() + " , position : " + position + " , firstSeen : " + selectedItem.getFirstSeen());
                 selectedItem.setChecked(!selectedItem.isChecked());
                 ((ShoppingListAdapter)getListAdapter()).notifyDataSetChanged();
             }

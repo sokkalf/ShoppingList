@@ -19,12 +19,14 @@ public class ItemDetailsActivity extends Activity {
         setContentView(R.layout.item_details);
         TextView itemNameText = (TextView) this.findViewById(R.id.itemname);
         TextView itemCreatedDateText = (TextView) this.findViewById(R.id.itemcreateddate);
+        TextView itemUsageCounter = (TextView) this.findViewById(R.id.usagecounter);
 
         Item item = (Item)getIntent().getSerializableExtra("item");
         Format formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         String firstSeen = formatter.format(item.getFirstSeen());
         itemNameText.setText(item.getName());
         itemCreatedDateText.setText(firstSeen);
+        itemUsageCounter.setText(Integer.toString(item.getUsageCounter()));
     }
 }
 

@@ -36,4 +36,20 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
     </LinearLayout>
+    <LinearLayout
+            android:id="@+id/linearlayout2"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:orientation="vertical">
+        <TextView
+                android:text="Used times"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        <TextView
+                android:id="@+id/usagecounter"
+                android:textSize="24sp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+    </LinearLayout>
 </LinearLayout>
