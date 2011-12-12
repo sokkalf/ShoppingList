@@ -1,5 +1,8 @@
 package no.opentech.shoppinglist;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
@@ -10,7 +13,7 @@ import java.util.GregorianCalendar;
  * Date: 09.04.11
  * Time: 19:47
  */
-public class Item implements Serializable {
+public class Item implements Serializable, Parcelable {
     private String name;
     private String description;
     private boolean checked;
@@ -21,6 +24,10 @@ public class Item implements Serializable {
     private Date lastSeen;
 
 
+    public Item() {
+        
+    }
+    
     public Item(String name) {
         this.name = name;
         Calendar cal = new GregorianCalendar();
@@ -110,4 +117,51 @@ public class Item implements Serializable {
     public void setAvgNumberInLine(int avgNumberInLine) {
         this.avgNumberInLine = avgNumberInLine;
     }
+
+    public void writeToParcel(Parcel p, int flags) {
+        p.writeString(Boolean.toString(this.checked));
+        p.writeString(this.name);
+        p.writeString(this.description);
+        p.writeValue(this.firstSeen);
+        p.writeValue(this.lastSeen);
+        p.writeInt(numberInLine);
+        p.writeInt(avgNumberInLine);
+        p.writeInt(usageCounter);
+    }
+    
+    public void readFromParcel(Parcel in) {
+        this.setChecked(Boolean.getBoolean(in.readString()));
+        this.setName(in.readString());
+        this.setDescription(in.readString());
+        this.setFirstSeen((Date) in.readValue(java.util.Date.class.getClassLoader()));
+        this.setLastSeen((Date) in.readValue(java.util.Date.class.getClassLoader()));
+        this.setNumberInLine(in.readInt());
+        this.setAvgNumberInLine(in.readInt());
+        this.setUsageCounter(in.readInt());
+    }
+
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Parcelable.Creator<Item> CREATOR = new Parcelable.Creator<Item>() {
+        public Item createFromParcel(Parcel source) {
+            final Item i = new Item();
+            i.checked = Boolean.getBoolean(source.readString());
+            i.name = source.readString();
+            i.description = source.readString();
+            i.firstSeen = (Date) source.readValue(java.util.Date.class.getClassLoader());
+            i.lastSeen = (Date) source.readValue(java.util.Date.class.getClassLoader());
+            i.numberInLine = source.readInt();
+            i.avgNumberInLine = source.readInt();
+            i.usageCounter = source.readInt();
+            return i;
+        }
+
+        public Item[] newArray(int size) {
+            throw new UnsupportedOperationException();
+        }
+
+    };
+    
 }
