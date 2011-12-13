@@ -1,7 +1,9 @@
 package no.opentech.shoppinglist;
 
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.provider.BaseColumns;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -14,6 +16,7 @@ import java.util.GregorianCalendar;
  * Time: 19:47
  */
 public class Item implements Serializable, Parcelable {
+    private long id;
     private String name;
     private String description;
     private boolean checked;
@@ -163,5 +166,12 @@ public class Item implements Serializable, Parcelable {
         }
 
     };
-    
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 }

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
@@ -36,6 +37,7 @@ public class ItemListActivity extends ListActivity
         super.onCreate(savedInstanceState);
 
         shoppingItems = new ArrayList<Item>();
+        /*
         shoppingItems.add(new Item("Bananer"));
         shoppingItems.add(new Item("Lime"));
         shoppingItems.add(new Item("Farris"));
@@ -43,11 +45,17 @@ public class ItemListActivity extends ListActivity
         shoppingItems.add(new Item("Kylling"));
         shoppingItems.add(new Item("Kjeks"));
         shoppingItems.add(new Item("Mel"));
-
+        */
 
         shoppingList = new ArrayList<Item>();
 
-        
+        DBHelper db = new DBHelper(getApplicationContext());
+        /*for(Item i : shoppingItems) {
+            db.insert(i);
+        }*/
+
+        shoppingItems = db.getItems();
+
         setListAdapter(new ItemAdapter(this.getApplicationContext(), R.layout.list_item, shoppingItems));
         ListView lv = getListView();
         registerForContextMenu(lv);
