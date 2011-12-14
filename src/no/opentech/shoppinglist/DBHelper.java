@@ -6,9 +6,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * User: sokkalf
@@ -33,15 +36,28 @@ public class DBHelper extends SQLiteOpenHelper {
             "   firstseen   INTEGER," +
             "   lastseen    INTEGER);";
 
+    private final Context myContext;
+
 
     public DBHelper(Context context) {
         super(context, "shoppingitems.db", null, DATABASE_VERSION);
+        myContext = context;
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.d("ShoppingList", "creating database");
-        db.execSQL(CREATE_STRING);
+        //db.execSQL(CREATE_STRING);
+        try {
+            InputStream is = myContext.getAssets().open("create_database.sql");
+            String[] statements = parseSqlFile(is);
+            for(String statement : statements)
+                db.execSQL(statement);
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        
         ArrayList<Item> shoppingItems = new ArrayList<Item>();
         shoppingItems.add(new Item("Bananer"));
         shoppingItems.add(new Item("Lime"));
@@ -159,15 +175,15 @@ public class DBHelper extends SQLiteOpenHelper {
         this.close();
         return i;
     }
-
+    
     public ArrayList<Item> getItems() {
         return getItems(null);
     }
-
+    
     public ArrayList<Item> getItemsOrderedByUsages() {
         return getItems("usages DESC");
     }
-
+    
     public ArrayList<Item> getItems(String orderBy) {
         ArrayList<Item> itemList = new ArrayList<Item>();
         Cursor c = this.getReadableDatabase().query("item", new String[] {"id", "name", "description", "usages", "avgNumberInLine",
@@ -182,5 +198,51 @@ public class DBHelper extends SQLiteOpenHelper {
         c.close();
         this.close();
         return itemList;
+    }
+
+    public static String[] parseSqlFile(InputStream sqlFile) throws IOException {
+        return parseSqlFile(new BufferedReader(new InputStreamReader(sqlFile)));
+    }
+
+    public static String[] parseSqlFile(BufferedReader sqlFile) throws IOException {
+        String line;
+        StringBuilder sql = new StringBuilder();
+        String multiLineComment = null;
+
+        while ((line = sqlFile.readLine()) != null) {
+            line = line.trim();
+
+            // Check for start of multi-line comment
+            if (multiLineComment == null) {
+                // Check for first multi-line comment type
+                if (line.startsWith("/*")) {
+                    if (!line.endsWith("}")) {
+                        multiLineComment = "/*";
+                    }
+                    // Check for second multi-line comment type
+                } else if (line.startsWith("{")) {
+                    if (!line.endsWith("}")) {
+                        multiLineComment = "{";
+                    }
+                    // Append line if line is not empty or a single line comment
+                } else if (!line.startsWith("--") && !line.equals("")) {
+                    sql.append(line);
+                } // Check for matching end comment
+            } else if (multiLineComment.equals("/*")) {
+                if (line.endsWith("*/")) {
+                    multiLineComment = null;
+                }
+                // Check for matching end comment
+            } else if (multiLineComment.equals("{")) {
+                if (line.endsWith("}")) {
+                    multiLineComment = null;
+                }
+            }
+
+        }
+
+        sqlFile.close();
+
+        return sql.toString().split(";");
     }
 }
