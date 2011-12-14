@@ -26,6 +26,7 @@ public final class R {
         public static final int removeitem=0x7f060007;
         public static final int savelist=0x7f06000a;
         public static final int showitemdetails=0x7f060008;
+        public static final int showshoppinglistitemdetails=0x7f06000c;
         public static final int usagecounter=0x7f060005;
     }
     public static final class layout {
@@ -36,6 +37,7 @@ public final class R {
     public static final class menu {
         public static final int items_context_menu=0x7f050000;
         public static final int menu=0x7f050001;
+        public static final int shoppinglist_context_menu=0x7f050002;
     }
     public static final class string {
         public static final int app_name=0x7f040000;
