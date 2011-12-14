@@ -28,13 +28,14 @@ public class Item implements Serializable, Parcelable {
 
 
     public Item() {
-        
+        Calendar cal = new GregorianCalendar();
+        this.firstSeen = this.lastSeen = cal.getTime();
     }
     
     public Item(String name) {
         this.name = name;
         Calendar cal = new GregorianCalendar();
-        this.firstSeen = cal.getTime();
+        this.firstSeen = this.lastSeen = cal.getTime();
     }
 
     public Item(String name, String description, boolean checked, int usageCounter, int numberInLine, int avgNumberInLine, Date firstSeen, Date lastSeen) {

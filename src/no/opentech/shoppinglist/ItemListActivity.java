@@ -30,6 +30,8 @@ public class ItemListActivity extends ListActivity
 
     private ArrayList<Item> shoppingList;
 
+    private DBHelper db;
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -37,24 +39,11 @@ public class ItemListActivity extends ListActivity
         super.onCreate(savedInstanceState);
 
         shoppingItems = new ArrayList<Item>();
-        /*
-        shoppingItems.add(new Item("Bananer"));
-        shoppingItems.add(new Item("Lime"));
-        shoppingItems.add(new Item("Farris"));
-        shoppingItems.add(new Item("Pizzasaus"));
-        shoppingItems.add(new Item("Kylling"));
-        shoppingItems.add(new Item("Kjeks"));
-        shoppingItems.add(new Item("Mel"));
-        */
-
         shoppingList = new ArrayList<Item>();
 
-        DBHelper db = new DBHelper(getApplicationContext());
-        /*for(Item i : shoppingItems) {
-            db.insert(i);
-        }*/
+        db = new DBHelper(getApplicationContext());
 
-        shoppingItems = db.getItems();
+        shoppingItems = db.getItemsOrderedByUsages();
 
         setListAdapter(new ItemAdapter(this.getApplicationContext(), R.layout.list_item, shoppingItems));
         ListView lv = getListView();
@@ -133,6 +122,7 @@ public class ItemListActivity extends ListActivity
         for(Item item : shoppingItems) {
             if(item.isChecked()) {
                 item.incrementUsageCounter();
+                db.update(item);
                 shoppingList.add(item);
                 Log.d(TAG, "adding : " + item);
             }
@@ -152,7 +142,13 @@ public class ItemListActivity extends ListActivity
 		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
 				String newItem = input.getText().toString().trim();
-                if(!newItem.equals("")) shoppingItems.add(new Item(newItem));
+                Item item = new Item();
+                if(!newItem.equals("")) {
+                    item.setName(newItem);
+                    long id = db.insert(item);
+                    item.setId(id);
+                    shoppingItems.add(item);
+                }
                 ((ItemAdapter) getListAdapter()).notifyDataSetChanged();
 			}
 		});
@@ -168,6 +164,7 @@ public class ItemListActivity extends ListActivity
     }
 
     public void removeItem(Item item) {
+        db.delete(item);
         shoppingItems.remove(item);
         ((ItemAdapter)getListAdapter()).notifyDataSetChanged();
     }

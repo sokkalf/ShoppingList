@@ -21,6 +21,7 @@ public class ShoppingListActivity extends ListActivity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle("My list");
 
         shoppingList = getIntent().getParcelableArrayListExtra("shoppinglist");
         setListAdapter(new ShoppingListAdapter(this.getApplicationContext(), R.layout.list_item, shoppingList));
