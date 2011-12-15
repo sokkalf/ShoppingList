@@ -69,7 +69,7 @@ public class ItemRepository {
                 "firstseen", "lastseen"}, "id = '" + id + "'", null, null, null, null);
 
         c.moveToFirst();
-        i = createItemFromValues(c.getInt(0), c.getString(1), c.getString(2), c.getInt(3), c.getInt(4), c.getLong(5),
+        i = Utils.createItemFromValues(c.getInt(0), c.getString(1), c.getString(2), c.getInt(3), c.getInt(4), c.getLong(5),
                 c.getLong(6));
 
         c.close();
@@ -77,32 +77,13 @@ public class ItemRepository {
         return i;
     }
 
-    public Item createItemFromValues(int id, String name, String desc, int usages,
-                                     int avgnum, long firstseen, long lastseen) {
-        Item i = new Item();
-        i.setId(id);
-        i.setName(name);
-        i.setDescription(desc);
-        i.setUsageCounter(usages);
-        i.setAvgNumberInLine(avgnum);
-        Date first = new Date();
-        first.setTime(firstseen);
-        i.setFirstSeen(first);
-        Date last = new Date();
-        last.setTime(lastseen);
-        i.setLastSeen(last);
-
-        return i;
-    }
-
-
     public Item getItemByName(String name) {
         Item i;
         Cursor c = dBHelper.getReadableDatabase().query("item", new String[] {"id", "name", "description", "usages", "avgNumberInLine",
                 "firstseen", "lastseen"}, "name = '" + name + "'", null, null, null, null);
 
         c.moveToFirst();
-        i = createItemFromValues(c.getInt(0), c.getString(1), c.getString(2), c.getInt(3), c.getInt(4), c.getLong(5),
+        i = Utils.createItemFromValues(c.getInt(0), c.getString(1), c.getString(2), c.getInt(3), c.getInt(4), c.getLong(5),
                 c.getLong(6));
 
         c.close();
@@ -125,7 +106,7 @@ public class ItemRepository {
 
         c.moveToFirst();
         while (!c.isAfterLast()) {
-            itemList.add(createItemFromValues(c.getInt(0), c.getString(1), c.getString(2), c.getInt(3), c.getInt(4), c.getLong(5),
+            itemList.add(Utils.createItemFromValues(c.getLong(0), c.getString(1), c.getString(2), c.getInt(3), c.getInt(4), c.getLong(5),
                     c.getLong(6)));
             c.moveToNext();
         }
