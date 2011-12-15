@@ -11,6 +11,7 @@ CREATE TABLE item (
 CREATE TABLE listitem (
   listid  INTEGER NOT NULL,
   itemid  INTEGER NOT NULL,
+  amount  NUMBER,
   FOREIGN KEY(listid) REFERENCES list(id),
   FOREIGN KEY(itemid) REFERENCES item(id)
 );
@@ -22,3 +23,5 @@ CREATE TABLE list (
   created_date INTEGER
 );
 
+INSERT INTO item (name, description, usages, avgNumberInLine, firstseen, lastseen)
+  VALUES ('Default', 'Replace me', 0, 0, 0, 0);

@@ -1,4 +1,4 @@
-package no.opentech.shoppinglist;
+package no.opentech.shoppinglist.activities;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -10,6 +10,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import no.opentech.shoppinglist.entities.Item;
+import no.opentech.shoppinglist.R;
+import no.opentech.shoppinglist.adapters.ShoppingListAdapter;
 
 import java.io.Serializable;
 import java.util.ArrayList;

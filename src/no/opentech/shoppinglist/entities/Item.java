@@ -1,9 +1,7 @@
-package no.opentech.shoppinglist;
+package no.opentech.shoppinglist.entities;
 
-import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.provider.BaseColumns;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -122,7 +120,16 @@ public class Item implements Serializable, Parcelable {
         this.avgNumberInLine = avgNumberInLine;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public void writeToParcel(Parcel p, int flags) {
+        p.writeLong(id);
         p.writeString(Boolean.toString(this.checked));
         p.writeString(this.name);
         p.writeString(this.description);
@@ -134,6 +141,7 @@ public class Item implements Serializable, Parcelable {
     }
     
     public void readFromParcel(Parcel in) {
+        this.setId(in.readLong());
         this.setChecked(Boolean.getBoolean(in.readString()));
         this.setName(in.readString());
         this.setDescription(in.readString());
@@ -151,6 +159,7 @@ public class Item implements Serializable, Parcelable {
     public static final Parcelable.Creator<Item> CREATOR = new Parcelable.Creator<Item>() {
         public Item createFromParcel(Parcel source) {
             final Item i = new Item();
+            i.id = source.readLong();
             i.checked = Boolean.getBoolean(source.readString());
             i.name = source.readString();
             i.description = source.readString();
@@ -168,11 +177,4 @@ public class Item implements Serializable, Parcelable {
 
     };
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 }

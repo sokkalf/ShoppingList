@@ -1,4 +1,4 @@
-package no.opentech.shoppinglist;
+package no.opentech.shoppinglist.activities;
 
 import android.app.ListActivity;
 

@@ -1,21 +1,22 @@
-package no.opentech.shoppinglist;
+package no.opentech.shoppinglist.activities;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Html;
 import android.text.InputType;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
+import no.opentech.shoppinglist.*;
+import no.opentech.shoppinglist.adapters.ItemAdapter;
+import no.opentech.shoppinglist.crud.ItemRepository;
+import no.opentech.shoppinglist.entities.Item;
+import no.opentech.shoppinglist.utils.DBHelper;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * User: sokkalf
@@ -31,6 +32,7 @@ public class ItemListActivity extends ListActivity
     private ArrayList<Item> shoppingList;
 
     private DBHelper db;
+    private ItemRepository ir;
 
     /** Called when the activity is first created. */
     @Override
@@ -42,8 +44,8 @@ public class ItemListActivity extends ListActivity
         shoppingList = new ArrayList<Item>();
 
         db = new DBHelper(getApplicationContext());
-
-        shoppingItems = db.getItemsOrderedByUsages();
+        ir = new ItemRepository(db);
+        shoppingItems = ir.getItemsOrderedByUsages();
 
         setListAdapter(new ItemAdapter(this.getApplicationContext(), R.layout.list_item, shoppingItems));
         ListView lv = getListView();
@@ -122,7 +124,7 @@ public class ItemListActivity extends ListActivity
         for(Item item : shoppingItems) {
             if(item.isChecked()) {
                 item.incrementUsageCounter();
-                db.update(item);
+                ir.update(item);
                 shoppingList.add(item);
                 Log.d(TAG, "adding : " + item);
             }
@@ -145,7 +147,7 @@ public class ItemListActivity extends ListActivity
                 Item item = new Item();
                 if(!newItem.equals("")) {
                     item.setName(newItem);
-                    long id = db.insert(item);
+                    long id = ir.insert(item);
                     item.setId(id);
                     shoppingItems.add(item);
                 }
@@ -164,7 +166,7 @@ public class ItemListActivity extends ListActivity
     }
 
     public void removeItem(Item item) {
-        db.delete(item);
+        ir.delete(item);
         shoppingItems.remove(item);
         ((ItemAdapter)getListAdapter()).notifyDataSetChanged();
     }

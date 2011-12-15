@@ -1,24 +1,27 @@
-package no.opentech.shoppinglist;
+package no.opentech.shoppinglist.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import no.opentech.shoppinglist.entities.Item;
+import no.opentech.shoppinglist.R;
 
 import java.util.ArrayList;
 
 /**
  * User: sokkalf
- * Date: 09.04.11
- * Time: 20:06
+ * Date: 12.12.11
+ * Time: 20:14
  */
-public class ItemAdapter extends ArrayAdapter<Item> {
+public class ShoppingListAdapter extends ArrayAdapter<Item> {
     private ArrayList<Item> items;
 
-    public ItemAdapter(Context context, int textViewResourceId, ArrayList<Item> items) {
+    public ShoppingListAdapter(Context context, int textViewResourceId, ArrayList<Item> items) {
         super(context, textViewResourceId, items);
         this.items = items;
     }
@@ -34,9 +37,10 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         if(null != item) {
             TextView text = (TextView) v.findViewById(R.id.itemtext);
             text.setText(item.getName());
+            text.setTextColor(Color.LTGRAY);
             if(item.isChecked())
-                text.setTextColor(Color.GREEN);
-            else text.setTextColor(Color.LTGRAY);
+                text.setPaintFlags(text.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            else text.setPaintFlags(text.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
         }
         return v;
     }
