@@ -1,6 +1,7 @@
 package no.opentech.shoppinglist.activities;
 
 import android.app.ListActivity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,7 +25,8 @@ import java.util.ArrayList;
  */
 @SuppressWarnings("unchecked")
 public class ShoppingListActivity extends ListActivity {
-    
+    private Context context = no.opentech.shoppinglist.ShoppingList.getContext();
+
     private ArrayList<Item> shoppingList;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -32,7 +34,7 @@ public class ShoppingListActivity extends ListActivity {
         setTitle("My list");
 
         shoppingList = getIntent().getParcelableArrayListExtra("shoppinglist");
-        setListAdapter(new ShoppingListAdapter(this.getApplicationContext(), R.layout.list_item, shoppingList));
+        setListAdapter(new ShoppingListAdapter(context, R.layout.list_item, shoppingList));
         ListView lv = getListView();
         registerForContextMenu(lv);
         lv.setTextFilterEnabled(true);
@@ -64,7 +66,7 @@ public class ShoppingListActivity extends ListActivity {
         switch(item.getItemId()) {
             case R.id.showshoppinglistitemdetails:
                 Intent intent = new Intent(this, ItemDetailsActivity.class);
-                intent.putExtra("item", (Serializable)selectedItem);
+                intent.putExtra("itemId", selectedItem.getId());
                 this.startActivity(intent);
                 break;
         }

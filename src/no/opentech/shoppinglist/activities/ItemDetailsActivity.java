@@ -3,8 +3,10 @@ package no.opentech.shoppinglist.activities;
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
+import no.opentech.shoppinglist.crud.ItemRepository;
 import no.opentech.shoppinglist.entities.Item;
 import no.opentech.shoppinglist.R;
+import no.opentech.shoppinglist.utils.Utils;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -21,14 +23,16 @@ public class ItemDetailsActivity extends Activity {
         setContentView(R.layout.item_details);
         TextView itemNameText = (TextView) this.findViewById(R.id.itemname);
         TextView itemCreatedDateText = (TextView) this.findViewById(R.id.itemcreateddate);
-        TextView itemUsageCounter = (TextView) this.findViewById(R.id.usagecounter);
+        TextView itemUsageCounter = (TextView) this.findViewById(R.id.itemusagecounter);
+        TextView itemUpdatedDateText = (TextView) this.findViewById(R.id.itemlastseen);
 
-        Item item = (Item)getIntent().getSerializableExtra("item");
+        long itemId = getIntent().getLongExtra("itemId", 0);
+        Item item = Utils.getItemRepository().getItemById(itemId);
         Format formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        String firstSeen = formatter.format(item.getFirstSeen());
         itemNameText.setText(item.getName());
-        itemCreatedDateText.setText(firstSeen);
+        itemCreatedDateText.setText(formatter.format(item.getFirstSeen()));
         itemUsageCounter.setText(Integer.toString(item.getUsageCounter()));
+        itemUpdatedDateText.setText(formatter.format(item.getLastSeen()));
     }
 }
 

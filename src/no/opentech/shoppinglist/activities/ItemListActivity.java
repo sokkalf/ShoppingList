@@ -2,6 +2,7 @@ package no.opentech.shoppinglist.activities;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +14,7 @@ import no.opentech.shoppinglist.*;
 import no.opentech.shoppinglist.adapters.ItemAdapter;
 import no.opentech.shoppinglist.crud.ItemRepository;
 import no.opentech.shoppinglist.entities.Item;
-import no.opentech.shoppinglist.utils.DBHelper;
+import no.opentech.shoppinglist.utils.Utils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -26,13 +27,9 @@ import java.util.ArrayList;
 public class ItemListActivity extends ListActivity
 {
     private static final String TAG = "ShoppingList";
-
     private ArrayList<Item> shoppingItems;
-
     private ArrayList<Item> shoppingList;
-
-    private DBHelper db;
-    private ItemRepository ir;
+    private Context context = no.opentech.shoppinglist.ShoppingList.getContext();
 
     /** Called when the activity is first created. */
     @Override
@@ -40,14 +37,13 @@ public class ItemListActivity extends ListActivity
     {
         super.onCreate(savedInstanceState);
 
+
         shoppingItems = new ArrayList<Item>();
         shoppingList = new ArrayList<Item>();
 
-        db = new DBHelper(getApplicationContext());
-        ir = new ItemRepository(db);
-        shoppingItems = ir.getItemsOrderedByUsages();
+        shoppingItems = Utils.getItemRepository().getItemsOrderedByUsages();
 
-        setListAdapter(new ItemAdapter(this.getApplicationContext(), R.layout.list_item, shoppingItems));
+        setListAdapter(new ItemAdapter(context, R.layout.list_item, shoppingItems));
         ListView lv = getListView();
         registerForContextMenu(lv);
         lv.setTextFilterEnabled(true);
@@ -77,7 +73,7 @@ public class ItemListActivity extends ListActivity
                 addNewItem();
                 break;
             case R.id.savelist:
-                Toast.makeText(getApplicationContext(), "Saving list..", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Saving list..", Toast.LENGTH_SHORT).show();
                 saveList();
                 break;
             case R.id.clearlist:
@@ -112,7 +108,7 @@ public class ItemListActivity extends ListActivity
                 break;
             case R.id.showitemdetails:
                 Intent intent = new Intent(this, ItemDetailsActivity.class);
-                intent.putExtra("item", (Serializable)selectedItem);
+                intent.putExtra("itemId", selectedItem.getId());
                 this.startActivity(intent);
                 break;
         }
@@ -124,7 +120,7 @@ public class ItemListActivity extends ListActivity
         for(Item item : shoppingItems) {
             if(item.isChecked()) {
                 item.incrementUsageCounter();
-                ir.update(item);
+                Utils.getItemRepository().update(item);
                 shoppingList.add(item);
                 Log.d(TAG, "adding : " + item);
             }
@@ -147,7 +143,7 @@ public class ItemListActivity extends ListActivity
                 Item item = new Item();
                 if(!newItem.equals("")) {
                     item.setName(newItem);
-                    long id = ir.insert(item);
+                    long id = Utils.getItemRepository().insert(item);
                     item.setId(id);
                     shoppingItems.add(item);
                 }
@@ -166,7 +162,7 @@ public class ItemListActivity extends ListActivity
     }
 
     public void removeItem(Item item) {
-        ir.delete(item);
+        Utils.getItemRepository().delete(item);
         shoppingItems.remove(item);
         ((ItemAdapter)getListAdapter()).notifyDataSetChanged();
     }

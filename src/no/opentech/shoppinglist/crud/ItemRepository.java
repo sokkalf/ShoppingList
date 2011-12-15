@@ -45,7 +45,7 @@ public class ItemRepository {
         if(null == id) throw new IllegalArgumentException("ID can't be null");
 
         long firstSeen = Utils.getTimeStamp(item.getFirstSeen());
-        long lastSeen = Utils.getTimeStamp(item.getLastSeen());
+        long lastSeen = Utils.getTimeStampNow(); // updating, so refresh timestamp
 
         String sql = "UPDATE item SET name = '" + item.getName() + "', description = '" + item.getDescription() + "'," +
                 " usages = " + item.getUsageCounter() + ", avgNumberInLine = " + item.getAvgNumberInLine() + "," +
