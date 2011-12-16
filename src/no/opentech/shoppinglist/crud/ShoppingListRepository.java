@@ -138,7 +138,7 @@ public class ShoppingListRepository {
 
         String sql = "SELECT id, name, description, usages, avgNumberInLine, firstseen, lastseen " +
                 "FROM item, listitem WHERE listid = " + slId + " AND item.id = listitem.itemid" +
-                    ((null != orderBy) ? "ORDER BY " + orderBy : "") + ";";
+                    ((null != orderBy) ? " ORDER BY " + orderBy : "") + ";";
 
         Cursor c = dBHelper.getReadableDatabase().rawQuery(sql, null);
 
