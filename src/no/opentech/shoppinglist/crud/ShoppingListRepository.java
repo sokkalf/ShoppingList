@@ -142,7 +142,7 @@ public class ShoppingListRepository {
     }
     
     public ArrayList<Item> getShoppingListItems(ShoppingList sl) {
-        return getShoppingListItems(sl, null);
+        return getShoppingListItems(sl, "avgNumberInLine");
     }
     
     public ArrayList<Item> getShoppingListItems(ShoppingList sl, String orderBy) {

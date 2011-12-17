@@ -68,4 +68,20 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
     </LinearLayout>
+    <LinearLayout
+            android:id="@+id/item_details_avgnuminline"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:orientation="vertical">
+        <TextView
+                android:text="Average number in line"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        <TextView
+                android:id="@+id/itemavgnuminline"
+                android:textSize="24sp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+    </LinearLayout>
 </LinearLayout>

@@ -28,7 +28,6 @@ public class ItemListActivity extends ListActivity
 {
     private static final String TAG = "ShoppingList";
     private ArrayList<Item> shoppingItems;
-    private ArrayList<Item> shoppingList;
     private Context context = no.opentech.shoppinglist.ShoppingList.getContext();
     private long shoppingListId;
     private boolean noList = false;
@@ -41,12 +40,10 @@ public class ItemListActivity extends ListActivity
 
 
         shoppingItems = new ArrayList<Item>();
-        shoppingList = new ArrayList<Item>();
-
         shoppingItems = Utils.getItemRepository().getItemsOrderedByUsages();
         shoppingListId = getIntent().getLongExtra("shoppingListId", 0);
         noList = getIntent().getBooleanExtra("noList", false);
-        setTitle("Select items");
+        setTitle((!noList) ? "Select items" : "Manage items");
         setListAdapter(new ItemAdapter(context, R.layout.list_item, shoppingItems));
         ListView lv = getListView();
         registerForContextMenu(lv);
@@ -134,13 +131,10 @@ public class ItemListActivity extends ListActivity
     
     public void saveList() {
         ShoppingList sl = Utils.getShoppingListRepository().getShoppingListById(shoppingListId);
-        shoppingList.clear();
         for(Item item : shoppingItems) {
             if(item.isChecked()) {
                 item.incrementUsageCounter();
                 Utils.getItemRepository().update(item);
-                Log.d(TAG, "adding : " + item);
-                shoppingList.add(item);
                 Utils.getShoppingListRepository().addItemToShoppingList(item, sl);
             }
         }
@@ -189,7 +183,6 @@ public class ItemListActivity extends ListActivity
 
     public void clearList() {
         for(Item item : shoppingItems) item.setChecked(false);
-        shoppingList.clear();
         ((ItemAdapter)getListAdapter()).notifyDataSetChanged();
     }
 }
