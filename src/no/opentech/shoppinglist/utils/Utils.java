@@ -67,6 +67,13 @@ public class Utils {
 
         return i;
     }
+
+    public static Item createItemFromValues(long id, String name, String desc, int usages,
+                                            int avgnum, long firstseen, long lastseen, int amount) {
+        Item i = createItemFromValues(id, name, desc, usages, avgnum, firstseen, lastseen);
+        i.setAmount(amount);
+        return i;
+    }
     
     public static ShoppingList createShoppingListFromValues(long id, String name, String desc, long created) {
         ShoppingList sl = new ShoppingList();

@@ -58,7 +58,7 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         Item item = items.get(position);
         if(null != item) {
             TextView text = (TextView) v.findViewById(R.id.itemtext);
-            text.setText(item.getName());
+            text.setText((item.getAmount() > 1) ? item.getAmount() + " " + item.getName() : item.getName());
             if(item.isChecked())
                 text.setTextColor(Color.GREEN);
             else text.setTextColor(Color.LTGRAY);

@@ -38,6 +38,7 @@ import no.opentech.shoppinglist.*;
 import no.opentech.shoppinglist.adapters.ItemAdapter;
 import no.opentech.shoppinglist.entities.Item;
 import no.opentech.shoppinglist.entities.ShoppingList;
+import no.opentech.shoppinglist.external.NumberPickerDialog;
 import no.opentech.shoppinglist.utils.Utils;
 
 import java.util.ArrayList;
@@ -136,7 +137,8 @@ public class ItemListActivity extends ListActivity
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         MenuInflater inf = getMenuInflater();
-        inf.inflate(R.menu.items_context_menu, menu);
+        if(!noList) inf.inflate(R.menu.items_context_menu, menu);
+        else inf.inflate(R.menu.items_context_menu_nolist, menu);
         menu.setHeaderTitle(R.string.context_menu_title);
     }
 
@@ -146,6 +148,9 @@ public class ItemListActivity extends ListActivity
         Item selectedItem = shoppingItems.get(info.position);
 
         switch(item.getItemId()) {
+            case R.id.setitemamount:
+                setItemAmount(selectedItem);
+                break;
             case R.id.removeitem:
                 removeItem(selectedItem);
                 break;
@@ -202,6 +207,22 @@ public class ItemListActivity extends ListActivity
 				});
 		alert.show();
 
+    }
+    
+    public void setItemAmount(final Item item) {
+        NumberPickerDialog picker = new NumberPickerDialog(this, 0, 1);
+        picker.setOnNumberSetListener(new NumberPickerDialog.OnNumberSetListener() {
+            public void onNumberSet(int selectedNumber) {
+                for(int i=0; i<shoppingItems.size(); i++) {
+                    if(item.getId() == shoppingItems.get(i).getId()) {
+                        shoppingItems.get(i).setAmount(selectedNumber);
+                        ((ItemAdapter) getListAdapter()).notifyDataSetChanged();
+                    }
+                }
+            }
+        });
+
+        picker.show();
     }
 
     public void removeItem(Item item) {

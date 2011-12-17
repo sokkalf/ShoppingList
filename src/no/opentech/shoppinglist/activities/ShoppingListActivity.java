@@ -136,13 +136,20 @@ public class ShoppingListActivity extends ListActivity {
                 intent.putExtra("itemId", selectedItem.getId());
                 this.startActivity(intent);
                 break;
+            case R.id.removefromshoppinglist:
+                shoppingList.getItems().remove(selectedItem);
+                visibleItems.remove(selectedItem);
+                Utils.getShoppingListRepository().removeItemFromShoppingList(selectedItem, shoppingList);
+                ((ShoppingListAdapter)getListAdapter()).notifyDataSetChanged();
+                break;
         }
         return true;
     }
     
     public void updateNumbersAndDeleteList() {
         for(Item item : shoppingList.getItems()) {
-            item.setAvgNumberInLine(item.getAvgNumberInLine() + item.getNumberInLine() / 2);
+            if(item.getUsageCounter() < 1) item.setAvgNumberInLine(item.getAvgNumberInLine() + item.getNumberInLine() / 2);
+            else item.setAvgNumberInLine(item.getNumberInLine());
             Utils.getItemRepository().update(item);
         }
         Utils.getShoppingListRepository().delete(shoppingList);

@@ -47,7 +47,7 @@ public class Item implements Serializable, Parcelable {
     private int avgNumberInLine;
     private Date firstSeen;
     private Date lastSeen;
-
+    private int amount;
 
     public Item() {
         Calendar cal = new GregorianCalendar();
@@ -60,7 +60,7 @@ public class Item implements Serializable, Parcelable {
         this.firstSeen = this.lastSeen = cal.getTime();
     }
 
-    public Item(String name, String description, boolean checked, int usageCounter, int numberInLine, int avgNumberInLine, Date firstSeen, Date lastSeen) {
+    public Item(String name, String description, boolean checked, int usageCounter, int numberInLine, int avgNumberInLine, Date firstSeen, Date lastSeen, int amount) {
         this.name = name;
         this.description = description;
         this.checked = checked;
@@ -69,6 +69,7 @@ public class Item implements Serializable, Parcelable {
         this.avgNumberInLine = avgNumberInLine;
         this.firstSeen = firstSeen;
         this.lastSeen = lastSeen;
+        this.amount = amount;
     }
 
     public String getName() {
@@ -160,6 +161,14 @@ public class Item implements Serializable, Parcelable {
         this.id = id;
     }
 
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+    
+    public int getAmount() {
+        return amount;
+    }
+            
     public void writeToParcel(Parcel p, int flags) {
         p.writeLong(id);
         p.writeString(Boolean.toString(this.checked));
@@ -170,6 +179,7 @@ public class Item implements Serializable, Parcelable {
         p.writeInt(numberInLine);
         p.writeInt(avgNumberInLine);
         p.writeInt(usageCounter);
+        p.writeInt(amount);
     }
     
     public void readFromParcel(Parcel in) {
@@ -182,6 +192,7 @@ public class Item implements Serializable, Parcelable {
         this.setNumberInLine(in.readInt());
         this.setAvgNumberInLine(in.readInt());
         this.setUsageCounter(in.readInt());
+        this.setAmount(in.readInt());
     }
 
     public int describeContents() {
@@ -200,6 +211,7 @@ public class Item implements Serializable, Parcelable {
             i.numberInLine = source.readInt();
             i.avgNumberInLine = source.readInt();
             i.usageCounter = source.readInt();
+            i.amount = source.readInt();
             return i;
         }
 

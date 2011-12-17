@@ -143,7 +143,17 @@ public class ShoppingListRepository {
     }
     
     public void addItemToShoppingList(Item i, ShoppingList sl) {
-        addItemToShoppingList(i, sl, 1);
+        addItemToShoppingList(i, sl, (i.getAmount() > 1) ? i.getAmount() : 1);
+    }
+    
+    public void updateItemAmount(Item i, ShoppingList sl, int amount) {
+        Long slId = sl.getId(), iId = i.getId();
+        if((null == iId) || (null == slId)) throw new IllegalArgumentException("Item ID and ShoppingList ID are required");
+        
+        String sql = "UPDATE listitem SET amount = " + amount + " WHERE listid = " + slId + " AND itemid = " + iId + ";";
+        Log.d(TAG, "updating amount for " + i.getName() + " to " + amount);
+        dBHelper.getWritableDatabase().execSQL(sql);
+        dBHelper.close();
     }
     
     public void addItemToShoppingList(Item i, ShoppingList sl, int amount) {
@@ -174,7 +184,7 @@ public class ShoppingListRepository {
         
         ArrayList<Item> itemList = new ArrayList<Item>();
 
-        String sql = "SELECT id, name, description, usages, avgNumberInLine, firstseen, lastseen " +
+        String sql = "SELECT id, name, description, usages, avgNumberInLine, firstseen, lastseen, amount " +
                 "FROM item, listitem WHERE listid = " + slId + " AND item.id = listitem.itemid" +
                     ((null != orderBy) ? " ORDER BY " + orderBy : "") + ";";
 
@@ -183,7 +193,7 @@ public class ShoppingListRepository {
         c.moveToFirst();
         while (!c.isAfterLast()) {
             itemList.add(Utils.createItemFromValues(c.getLong(0), c.getString(1), c.getString(2), c.getInt(3), c.getInt(4), c.getLong(5),
-                    c.getLong(6)));
+                    c.getLong(6), c.getInt(7)));
             c.moveToNext();
         }
         c.close();
