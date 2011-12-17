@@ -182,14 +182,17 @@ public class ItemListActivity extends ListActivity
     }
     
     public void deleteSelected() {
+        int deleted=0;
         for(int i=0; i<shoppingItems.size(); i++) {
             Item item = shoppingItems.get(i);
             if(item.isChecked()) {
                 shoppingItems.remove(item);
                 Utils.getItemRepository().delete(item);
+                deleted++;
             }
         }
         ((ItemAdapter)getListAdapter()).notifyDataSetChanged();
+        Toast.makeText(context,((deleted != 0) ? "Deleted " + deleted + " items" : "No items deleted"), Toast.LENGTH_SHORT).show();
     }
 
     public void clearList() {
