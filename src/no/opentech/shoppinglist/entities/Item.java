@@ -18,6 +18,7 @@ public class Item implements Serializable, Parcelable {
     private String name;
     private String description;
     private boolean checked;
+    private boolean hidden;
     private int usageCounter;
     private int numberInLine;
     private int avgNumberInLine;
@@ -69,6 +70,14 @@ public class Item implements Serializable, Parcelable {
 
     public void setChecked(boolean checked) {
         this.checked = checked;
+    }
+
+    public boolean isHidden() {
+        return hidden;
+    }
+
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
     }
 
     public int getUsageCounter() {

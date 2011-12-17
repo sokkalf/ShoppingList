@@ -40,6 +40,7 @@ public class ShoppingListActivity extends ListActivity {
     private float mAccelCurrent; // current acceleration including gravity
     private float mAccelLast; // last acceleration including gravity
     private ShoppingList shoppingList;
+    private ArrayList<Item> visibleItems;
 
     private int numInLine;
 
@@ -55,14 +56,16 @@ public class ShoppingListActivity extends ListActivity {
         shoppingList = Utils.getShoppingListRepository().getShoppingListById(id);
         numInLine = 0;
         setTitle(shoppingList.getName());
-        setListAdapter(new ShoppingListAdapter(context, R.layout.list_item, shoppingList.getItems()));
+        visibleItems = new ArrayList<Item>();
+        visibleItems.addAll(shoppingList.getItems());
+        setListAdapter(new ShoppingListAdapter(context, R.layout.list_item, visibleItems));
         ListView lv = getListView();
         registerForContextMenu(lv);
         lv.setTextFilterEnabled(true);
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Item selectedItem = shoppingList.getItems().get(position);
+                Item selectedItem = visibleItems.get(position);
                 Log.d("ShoppingList", "selected item : " + selectedItem.getName() + " , position : " + position + " , firstSeen : " + selectedItem.getFirstSeen());
                 if(!selectedItem.isChecked()) { // this could be better, but OK for now..
                     numInLine++;
@@ -83,7 +86,7 @@ public class ShoppingListActivity extends ListActivity {
     public void onBackPressed() {
         Intent resultIntent = new Intent();
         if(shoppingList.allItemsChecked()) {
-            updateNumbers();
+            updateNumbersAndDeleteList();
             setResult(Activity.RESULT_OK, resultIntent);
         } else {
             setResult(Activity.RESULT_CANCELED, resultIntent);
@@ -102,7 +105,7 @@ public class ShoppingListActivity extends ListActivity {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        Item selectedItem = shoppingList.getItems().get(info.position);
+        Item selectedItem = visibleItems.get(info.position);
 
         switch(item.getItemId()) {
             case R.id.showshoppinglistitemdetails:
@@ -114,7 +117,7 @@ public class ShoppingListActivity extends ListActivity {
         return true;
     }
     
-    public void updateNumbers() {
+    public void updateNumbersAndDeleteList() {
         for(Item item : shoppingList.getItems()) {
             item.setAvgNumberInLine(item.getAvgNumberInLine() + item.getNumberInLine() / 2);
             Utils.getItemRepository().update(item);
@@ -136,11 +139,12 @@ public class ShoppingListActivity extends ListActivity {
             if(mAccel > 5) {
                 if(shoppingList.allItemsChecked()) {
                     Intent resultIntent = new Intent();
-                    updateNumbers();
+                    updateNumbersAndDeleteList();
                     setResult(Activity.RESULT_OK, resultIntent);
                     finish();
                 } else {
-                    shoppingList.removeCheckedItems();
+                    shoppingList.hideCheckedItems();
+                    visibleItems.removeAll(shoppingList.getHiddenItems());
                     ((ShoppingListAdapter)getListAdapter()).notifyDataSetChanged();
                 }
             }

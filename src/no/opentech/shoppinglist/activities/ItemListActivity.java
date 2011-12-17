@@ -17,7 +17,6 @@ import no.opentech.shoppinglist.entities.Item;
 import no.opentech.shoppinglist.entities.ShoppingList;
 import no.opentech.shoppinglist.utils.Utils;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -32,6 +31,7 @@ public class ItemListActivity extends ListActivity
     private ArrayList<Item> shoppingList;
     private Context context = no.opentech.shoppinglist.ShoppingList.getContext();
     private long shoppingListId;
+    private boolean noList = false;
 
     /** Called when the activity is first created. */
     @Override
@@ -45,6 +45,7 @@ public class ItemListActivity extends ListActivity
 
         shoppingItems = Utils.getItemRepository().getItemsOrderedByUsages();
         shoppingListId = getIntent().getLongExtra("shoppingListId", 0);
+        noList = getIntent().getBooleanExtra("noList", false);
         setTitle("Select items");
         setListAdapter(new ItemAdapter(context, R.layout.list_item, shoppingItems));
         ListView lv = getListView();
@@ -73,7 +74,9 @@ public class ItemListActivity extends ListActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inf = getMenuInflater();
-        inf.inflate(R.menu.menu, menu);
+        if(!noList)
+            inf.inflate(R.menu.itemlist_options, menu);
+        else inf.inflate(R.menu.itemlist_options_nolist, menu);
         return true;
     }
 
@@ -89,6 +92,9 @@ public class ItemListActivity extends ListActivity
                 break;
             case R.id.clearlist:
                 clearList();
+                break;
+            case R.id.deleteselected:
+                Toast.makeText(context, "Not implemented yet", Toast.LENGTH_SHORT).show();
                 break;
 
         }

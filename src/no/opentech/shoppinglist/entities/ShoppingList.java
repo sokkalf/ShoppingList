@@ -52,6 +52,18 @@ public class ShoppingList implements Serializable, Parcelable {
         for(int i=0; i<items.size(); i++)
             if(items.get(i).isChecked()) items.remove(i);
     }
+    
+    public void hideCheckedItems() {
+        for(Item i : items)
+            if(i.isChecked()) i.setHidden(true);
+    }
+    
+    public ArrayList<Item> getHiddenItems() {
+        ArrayList<Item> hiddenItems = new ArrayList<Item>();
+        for(Item i : items) if(i.isHidden()) hiddenItems.add(i);
+
+        return hiddenItems;
+    }
 
     public boolean isDefaultList() {
         return defaultlist;

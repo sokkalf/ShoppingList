@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/newlist" android:icon="@drawable/newlist" android:title="@string/menu_newlist" />
+    <item android:id="@+id/manageitems" android:icon="@drawable/manage" android:title="@string/menu_manageitems" />
+</menu>

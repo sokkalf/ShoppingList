@@ -7,4 +7,7 @@
     <string name="menu_savelist">Save shopping list</string>
     <string name="menu_clearlist">Clear list</string>
     <string name="context_menu_title">Select action</string>
+    <string name="menu_newlist">New shopping list</string>
+    <string name="menu_manageitems">Manage items</string>
+    <string name="menu_deleteselected">Delete selected items</string>
 </resources>

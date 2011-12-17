@@ -8,10 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
-import android.view.ContextMenu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -84,6 +81,28 @@ public class ViewShoppingListsActivity extends ListActivity {
         ((ViewShoppingListAdapter) getListAdapter()).notifyDataSetChanged();
     }
 
+    /* create the menu */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inf = getMenuInflater();
+        inf.inflate(R.menu.shoppinglists_options, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.newlist:
+                createNewShoppingList();
+                break;
+            case R.id.manageitems:
+                manageItems();
+                break;
+        }
+        return true;
+    }
+
+
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
@@ -119,6 +138,12 @@ public class ViewShoppingListsActivity extends ListActivity {
         Intent intent = new Intent(this, ItemListActivity.class);
         intent.putExtra("shoppingListId", id);
         this.startActivityForResult(intent, ITEMLISTACTIVITY);
+    }
+    
+    public void manageItems() {
+        Intent intent = new Intent(this, ItemListActivity.class);
+        intent.putExtra("noList", true);
+        this.startActivity(intent);
     }
 
     public void createNewShoppingList() {
