@@ -91,7 +91,7 @@ public class ItemListActivity extends ListActivity
                 clearList();
                 break;
             case R.id.deleteselected:
-                Toast.makeText(context, "Not implemented yet", Toast.LENGTH_SHORT).show();
+                deleteSelected();
                 break;
 
         }
@@ -178,6 +178,17 @@ public class ItemListActivity extends ListActivity
     public void removeItem(Item item) {
         Utils.getItemRepository().delete(item);
         shoppingItems.remove(item);
+        ((ItemAdapter)getListAdapter()).notifyDataSetChanged();
+    }
+    
+    public void deleteSelected() {
+        for(int i=0; i<shoppingItems.size(); i++) {
+            Item item = shoppingItems.get(i);
+            if(item.isChecked()) {
+                shoppingItems.remove(item);
+                Utils.getItemRepository().delete(item);
+            }
+        }
         ((ItemAdapter)getListAdapter()).notifyDataSetChanged();
     }
 
