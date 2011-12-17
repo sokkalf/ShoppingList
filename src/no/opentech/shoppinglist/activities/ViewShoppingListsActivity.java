@@ -121,7 +121,10 @@ public class ViewShoppingListsActivity extends ListActivity {
                 Toast.makeText(context, "Not implemented yet..", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.deleteshoppinglist:
-                deleteShoppingList(selectedItem);
+                if(selectedItem.isDefaultList())
+                    Toast.makeText(context, "Can't delete this", Toast.LENGTH_SHORT).show();
+                else
+                    deleteShoppingList(selectedItem);
                 break;
         }
         
