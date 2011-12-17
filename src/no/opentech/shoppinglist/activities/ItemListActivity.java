@@ -90,6 +90,12 @@ public class ItemListActivity extends ListActivity
         finish();
     }
     
+    @Override
+    public boolean onSearchRequested() {
+        Toast.makeText(context, "Search not available yet", Toast.LENGTH_SHORT).show();
+        return super.onSearchRequested();
+    }
+    
     /* create the menu */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
