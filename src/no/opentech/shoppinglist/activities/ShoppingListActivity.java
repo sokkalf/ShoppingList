@@ -133,7 +133,7 @@ public class ShoppingListActivity extends ListActivity {
             float delta = mAccelCurrent - mAccelLast;
             mAccel = mAccel * 0.9f + delta; // perform low-cut filter
             
-            if(mAccel > 2) {
+            if(mAccel > 5) {
                 if(shoppingList.allItemsChecked()) {
                     Intent resultIntent = new Intent();
                     updateNumbers();
