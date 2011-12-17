@@ -1,5 +1,6 @@
 package no.opentech.shoppinglist.activities;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
@@ -12,8 +13,8 @@ import android.view.*;
 import android.widget.*;
 import no.opentech.shoppinglist.*;
 import no.opentech.shoppinglist.adapters.ItemAdapter;
-import no.opentech.shoppinglist.crud.ItemRepository;
 import no.opentech.shoppinglist.entities.Item;
+import no.opentech.shoppinglist.entities.ShoppingList;
 import no.opentech.shoppinglist.utils.Utils;
 
 import java.io.Serializable;
@@ -30,6 +31,7 @@ public class ItemListActivity extends ListActivity
     private ArrayList<Item> shoppingItems;
     private ArrayList<Item> shoppingList;
     private Context context = no.opentech.shoppinglist.ShoppingList.getContext();
+    private long shoppingListId;
 
     /** Called when the activity is first created. */
     @Override
@@ -42,7 +44,8 @@ public class ItemListActivity extends ListActivity
         shoppingList = new ArrayList<Item>();
 
         shoppingItems = Utils.getItemRepository().getItemsOrderedByUsages();
-
+        shoppingListId = getIntent().getLongExtra("shoppingListId", 0);
+        setTitle("Select items");
         setListAdapter(new ItemAdapter(context, R.layout.list_item, shoppingItems));
         ListView lv = getListView();
         registerForContextMenu(lv);
@@ -56,6 +59,14 @@ public class ItemListActivity extends ListActivity
                 ((ItemAdapter)getListAdapter()).notifyDataSetChanged();
             }
         });
+    }
+    
+    @Override
+    public void onBackPressed() {
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("shoppingListId", shoppingListId);
+        setResult(Activity.RESULT_CANCELED, resultIntent);
+        finish();
     }
     
     /* create the menu */
@@ -116,18 +127,21 @@ public class ItemListActivity extends ListActivity
     }
     
     public void saveList() {
+        ShoppingList sl = Utils.getShoppingListRepository().getShoppingListById(shoppingListId);
         shoppingList.clear();
         for(Item item : shoppingItems) {
             if(item.isChecked()) {
                 item.incrementUsageCounter();
                 Utils.getItemRepository().update(item);
-                shoppingList.add(item);
                 Log.d(TAG, "adding : " + item);
+                shoppingList.add(item);
+                Utils.getShoppingListRepository().addItemToShoppingList(item, sl);
             }
         }
-        Intent intent = new Intent(this, ShoppingListActivity.class);
-        intent.putExtra("shoppinglist", (Serializable)shoppingList);
-        this.startActivity(intent);
+
+        Intent resultIntent = new Intent();
+        setResult(Activity.RESULT_OK, resultIntent);
+        this.finish();
     }
 
     /* show dialog with input box, for adding item to shopping list */
@@ -172,5 +186,4 @@ public class ItemListActivity extends ListActivity
         shoppingList.clear();
         ((ItemAdapter)getListAdapter()).notifyDataSetChanged();
     }
-
 }

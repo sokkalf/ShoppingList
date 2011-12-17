@@ -2,6 +2,7 @@ package no.opentech.shoppinglist.crud;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import no.opentech.shoppinglist.entities.Item;
 import no.opentech.shoppinglist.entities.ShoppingList;
 import no.opentech.shoppinglist.utils.DBHelper;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
  */
 public class ShoppingListRepository {
     DBHelper dBHelper;
+    private static final String TAG = "ShoppingList:ShoppingListRepository";
     
     public ShoppingListRepository(DBHelper db) {
         this.dBHelper = db;
@@ -33,6 +35,7 @@ public class ShoppingListRepository {
         Cursor c = db.rawQuery("SELECT last_insert_rowid();", null);
         c.moveToFirst();
         long id = c.getLong(0);
+        Log.d(TAG, "Inserted shopping list " + sl.getName() + " with ID " + id);
         dBHelper.close();
         return id;
     }
@@ -46,6 +49,7 @@ public class ShoppingListRepository {
         String sql = "UPDATE list SET name = '" + sl.getName() + "', description = '" + sl.getDescription() + "'," +
                 "created = " + created + " WHERE id = " + id + ";";
         dBHelper.getWritableDatabase().execSQL(sql);
+        Log.d(TAG, "Updated shopping list with ID " + id);
         dBHelper.close();
     }
 
@@ -56,6 +60,15 @@ public class ShoppingListRepository {
         SQLiteDatabase db = dBHelper.getWritableDatabase();
         db.execSQL("DELETE FROM listitem WHERE listid = " + id + ";"); // remove items first
         db.execSQL("DELETE FROM list WHERE id = " + id + ";");
+        Log.d(TAG, "Deleted shopping list with id " + id);
+        dBHelper.close();
+    }
+
+    public void deleteById(long id) {
+        SQLiteDatabase db = dBHelper.getWritableDatabase();
+        db.execSQL("DELETE FROM listitem WHERE listid = " + id + ";"); // remove items first
+        db.execSQL("DELETE FROM list WHERE id = " + id + ";");
+        Log.d(TAG, "Deleted shopping list with id " + id);
         dBHelper.close();
     }
 
@@ -69,6 +82,7 @@ public class ShoppingListRepository {
 
         c.close();
         dBHelper.close();
+        sl.setItems(getShoppingListItems(sl));
         return sl;
     }
 
@@ -82,6 +96,7 @@ public class ShoppingListRepository {
 
         c.close();
         dBHelper.close();
+        sl.setItems(getShoppingListItems(sl));
         return sl;
     }
     
