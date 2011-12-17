@@ -1,3 +1,26 @@
+/*
+ * ShoppingList for Android
+ * (C)2011 by Christian Lønaas
+ *    <christian dot lonaas at discombobulator dot org>
+ *
+ * This file is part of ShoppingList.
+ *
+ * ShoppingList is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * ShoppingList is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with ShoppingList.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+
 package no.opentech.shoppinglist.activities;
 
 import android.app.Activity;
@@ -28,9 +51,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * User: sokkalf
- * Date: 12/11/11
- * Time: 1:05 AM
+ * Created by: Christian Lønaas
+ * Date: 11.12.11
+ * Time: 01:05
  */
 @SuppressWarnings("unchecked")
 public class ShoppingListActivity extends ListActivity {
