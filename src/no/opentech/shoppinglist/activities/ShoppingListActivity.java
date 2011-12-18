@@ -39,15 +39,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
-import no.opentech.shoppinglist.adapters.ViewShoppingListAdapter;
+import no.opentech.shoppinglist.ShoppingListApp;
 import no.opentech.shoppinglist.entities.Item;
 import no.opentech.shoppinglist.R;
 import no.opentech.shoppinglist.adapters.ShoppingListAdapter;
 import no.opentech.shoppinglist.entities.ShoppingList;
+import no.opentech.shoppinglist.utils.Logger;
 import no.opentech.shoppinglist.utils.Utils;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -57,13 +56,14 @@ import java.util.ArrayList;
  */
 @SuppressWarnings("unchecked")
 public class ShoppingListActivity extends ListActivity {
-    private Context context = no.opentech.shoppinglist.ShoppingList.getContext();
+    private Context context = ShoppingListApp.getContext();
     private SensorManager mSensorManager;
     private float mAccel; // acceleration apart from gravity
     private float mAccelCurrent; // current acceleration including gravity
     private float mAccelLast; // last acceleration including gravity
     private ShoppingList shoppingList;
     private ArrayList<Item> visibleItems;
+    private static Logger log = Logger.getLogger(ShoppingListActivity.class);
 
     private int numInLine;
 
@@ -89,7 +89,7 @@ public class ShoppingListActivity extends ListActivity {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Item selectedItem = visibleItems.get(position);
-                Log.d("ShoppingList", "selected item : " + selectedItem.getName() + " , position : " + position + " , firstSeen : " + selectedItem.getFirstSeen());
+                log.debug("selected item : " + selectedItem.getName() + " , position : " + position + " , firstSeen : " + selectedItem.getFirstSeen());
                 if(!selectedItem.isChecked()) { // this could be better, but OK for now..
                     numInLine++;
                     selectedItem.setChecked(true);

@@ -37,11 +37,11 @@ import android.view.*;
 import android.widget.*;
 import no.opentech.shoppinglist.*;
 import no.opentech.shoppinglist.adapters.ItemAdapter;
-import no.opentech.shoppinglist.crud.ItemRepository;
 import no.opentech.shoppinglist.entities.Item;
 import no.opentech.shoppinglist.entities.ShoppingList;
 import no.opentech.shoppinglist.external.NumberPickerDialog;
 import no.opentech.shoppinglist.file.JSONHandler;
+import no.opentech.shoppinglist.utils.Logger;
 import no.opentech.shoppinglist.utils.Utils;
 
 import java.util.ArrayList;
@@ -53,12 +53,13 @@ import java.util.ArrayList;
  */
 public class ItemListActivity extends ListActivity
 {
-    private static final String TAG = "ShoppingList";
+    private static final String TAG = "ShoppingList/ItemListActivity";
     private ArrayList<Item> shoppingItems;
-    private Context context = no.opentech.shoppinglist.ShoppingList.getContext();
+    private Context context = ShoppingListApp.getContext();
     private long shoppingListId;
     private boolean noList = false;
     public static final String BACKUPFILE = "backup.json";
+    public static Logger log;
 
     /** Called when the activity is first created. */
     @Override
@@ -66,7 +67,7 @@ public class ItemListActivity extends ListActivity
     {
         super.onCreate(savedInstanceState);
 
-
+        log = Logger.getLogger(ItemListActivity.class);
         shoppingItems = new ArrayList<Item>();
         shoppingItems = Utils.getItemRepository().getItemsOrderedByUsages();
         shoppingListId = getIntent().getLongExtra("shoppingListId", 0);
@@ -268,7 +269,7 @@ public class ItemListActivity extends ListActivity
             JSONHandler j = new JSONHandler();
             ArrayList<Item> importedItems = j.createItemListFromJSON(json);
             for(Item i : importedItems) {
-                Log.d(TAG, i.getName() + " read from import");
+                log.debug(i.getName() + " read from import");
                 long id = Utils.getItemRepository().insert(i);
                 i.setId(id);
             }

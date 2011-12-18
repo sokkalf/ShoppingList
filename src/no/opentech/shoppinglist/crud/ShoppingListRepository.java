@@ -29,6 +29,7 @@ import android.util.Log;
 import no.opentech.shoppinglist.entities.Item;
 import no.opentech.shoppinglist.entities.ShoppingList;
 import no.opentech.shoppinglist.utils.DBHelper;
+import no.opentech.shoppinglist.utils.Logger;
 import no.opentech.shoppinglist.utils.Utils;
 
 import java.util.ArrayList;
@@ -40,10 +41,11 @@ import java.util.ArrayList;
  */
 public class ShoppingListRepository {
     DBHelper dBHelper;
-    private static final String TAG = "ShoppingList:ShoppingListRepository";
-    
+    private static Logger log;
+
     public ShoppingListRepository(DBHelper db) {
         this.dBHelper = db;
+        log = Logger.getLogger(ShoppingListRepository.class);
     }
 
     public long insert(ShoppingList sl) {
@@ -58,7 +60,7 @@ public class ShoppingListRepository {
         Cursor c = db.rawQuery("SELECT last_insert_rowid();", null);
         c.moveToFirst();
         long id = c.getLong(0);
-        Log.d(TAG, "Inserted shopping list " + sl.getName() + " with ID " + id);
+        log.debug("Inserted shopping list " + sl.getName() + " with ID " + id);
         dBHelper.close();
         return id;
     }
@@ -72,7 +74,7 @@ public class ShoppingListRepository {
         String sql = "UPDATE list SET name = '" + sl.getName() + "', description = '" + sl.getDescription() + "'," +
                 "created = " + created + " WHERE id = " + id + ";";
         dBHelper.getWritableDatabase().execSQL(sql);
-        Log.d(TAG, "Updated shopping list with ID " + id);
+        log.debug("Updated shopping list with ID " + id);
         dBHelper.close();
     }
 
@@ -83,7 +85,7 @@ public class ShoppingListRepository {
         SQLiteDatabase db = dBHelper.getWritableDatabase();
         db.execSQL("DELETE FROM listitem WHERE listid = " + id + ";"); // remove items first
         db.execSQL("DELETE FROM list WHERE id = " + id + ";");
-        Log.d(TAG, "Deleted shopping list with id " + id);
+        log.debug("Deleted shopping list with id " + id);
         dBHelper.close();
     }
 
@@ -91,7 +93,7 @@ public class ShoppingListRepository {
         SQLiteDatabase db = dBHelper.getWritableDatabase();
         db.execSQL("DELETE FROM listitem WHERE listid = " + id + ";"); // remove items first
         db.execSQL("DELETE FROM list WHERE id = " + id + ";");
-        Log.d(TAG, "Deleted shopping list with id " + id);
+        log.debug("Deleted shopping list with id " + id);
         dBHelper.close();
     }
 
@@ -151,7 +153,7 @@ public class ShoppingListRepository {
         if((null == iId) || (null == slId)) throw new IllegalArgumentException("Item ID and ShoppingList ID are required");
         
         String sql = "UPDATE listitem SET amount = " + amount + " WHERE listid = " + slId + " AND itemid = " + iId + ";";
-        Log.d(TAG, "updating amount for " + i.getName() + " to " + amount);
+        log.debug("updating amount for " + i.getName() + " to " + amount);
         dBHelper.getWritableDatabase().execSQL(sql);
         dBHelper.close();
     }

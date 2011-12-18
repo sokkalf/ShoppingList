@@ -24,6 +24,7 @@ package no.opentech.shoppinglist.file;
 
 import android.util.Log;
 import no.opentech.shoppinglist.entities.Item;
+import no.opentech.shoppinglist.utils.Logger;
 import no.opentech.shoppinglist.utils.Utils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,6 +38,8 @@ import java.util.Date;
  * Time: 01:20
  */
 public class JSONHandler {
+    private static Logger log = Logger.getLogger(JSONHandler.class);
+
     public JSONHandler() {
 
     }

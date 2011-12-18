@@ -37,6 +37,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 import no.opentech.shoppinglist.R;
+import no.opentech.shoppinglist.ShoppingListApp;
 import no.opentech.shoppinglist.adapters.ViewShoppingListAdapter;
 import no.opentech.shoppinglist.entities.ShoppingList;
 import no.opentech.shoppinglist.utils.Utils;
@@ -48,7 +49,7 @@ import java.util.ArrayList;
  * Time: 21:34
  */
 public class ViewShoppingListsActivity extends ListActivity {
-    private Context context = no.opentech.shoppinglist.ShoppingList.getContext();
+    private Context context = ShoppingListApp.getContext();
     private ArrayList<ShoppingList> shoppingLists;
     private static final int ITEMLISTACTIVITY = 98;
     private static final int SHOPPINGLISTACTIVITY = 99;

@@ -25,6 +25,7 @@ package no.opentech.shoppinglist.utils;
 
 import android.os.Environment;
 import android.util.Log;
+import no.opentech.shoppinglist.ShoppingListApp;
 import no.opentech.shoppinglist.crud.ItemRepository;
 import no.opentech.shoppinglist.crud.ShoppingListRepository;
 import no.opentech.shoppinglist.entities.Item;
@@ -44,7 +45,7 @@ import java.util.Date;
  * Time: 21:52
  */
 public class Utils {
-    private static final String TAG = "ShoppingList/Utils";
+    private static Logger log = Logger.getLogger(Utils.class);
     private static DBHelper dBHelper = getDBHelper();
     private static ItemRepository itemRepository = getItemRepository();
     private static ShoppingListRepository shoppingListRepository = getShoppingListRepository();
@@ -98,7 +99,7 @@ public class Utils {
     
     public static DBHelper getDBHelper() {
         if(null != dBHelper) return dBHelper;
-        else return new DBHelper(no.opentech.shoppinglist.ShoppingList.getContext());
+        else return new DBHelper(ShoppingListApp.getContext());
     }
 
     public static ItemRepository getItemRepository() {
@@ -112,7 +113,6 @@ public class Utils {
     }
     
     public static boolean writeFileToSDCard(String fileName, String data) {
-        Log.d(TAG, Environment.getExternalStorageDirectory().getAbsolutePath());
         File f = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + FILEROOT);
         if(!f.exists())
             if(!f.mkdir()) return false;
@@ -125,11 +125,12 @@ public class Utils {
         } catch(Exception e) {
             return false;
         }
-        Log.d(TAG, "Wrote " + f.getAbsolutePath());
+        log.debug("Wrote " + f.getAbsolutePath());
         return true;
     }
     
     public static String readFileFromSDCard(String fileName) {
+        log.debug("Reading " + fileName);
         try {
             FileInputStream stream = new FileInputStream(
                     new File(Environment.getExternalStorageDirectory().getAbsolutePath() + FILEROOT + fileName));

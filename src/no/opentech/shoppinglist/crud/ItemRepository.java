@@ -27,6 +27,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import no.opentech.shoppinglist.entities.Item;
 import no.opentech.shoppinglist.utils.DBHelper;
+import no.opentech.shoppinglist.utils.Logger;
 import no.opentech.shoppinglist.utils.Utils;
 
 import java.util.ArrayList;
@@ -38,7 +39,9 @@ import java.util.Date;
  * Time: 21:40
  */
 public class ItemRepository {
+    private static Logger log = Logger.getLogger(ItemRepository.class);
     DBHelper dBHelper;
+    
     public ItemRepository(DBHelper db) {
         this.dBHelper = db;
     }
@@ -59,6 +62,7 @@ public class ItemRepository {
         Cursor c = db.rawQuery("SELECT last_insert_rowid();", null);
         c.moveToFirst();
         long id = c.getLong(0);
+        log.debug("Inserted item " + item.getName() + " with ID " + id);
         dBHelper.close();
         return id;
     }
@@ -74,6 +78,7 @@ public class ItemRepository {
                 " usages = " + item.getUsageCounter() + ", avgNumberInLine = " + item.getAvgNumberInLine() + "," +
                 " firstseen = " + firstSeen + ", lastseen = " + lastSeen + " WHERE id = " + id + ";";
         dBHelper.getWritableDatabase().execSQL(sql);
+        log.debug("Updated item " + item.getName() + " with ID " + id);
         dBHelper.close();
     }
 
@@ -83,6 +88,7 @@ public class ItemRepository {
 
         String sql = "DELETE FROM item WHERE id = " + id + ";";
         dBHelper.getWritableDatabase().execSQL(sql);
+        log.debug("Deleted item " + item.getName() + " with ID " + id);
         dBHelper.close();
     }
 
@@ -134,6 +140,7 @@ public class ItemRepository {
             c.moveToNext();
         }
         c.close();
+        log.debug("Returned " + itemList.size() + " items");
         dBHelper.close();
         return itemList;
     }

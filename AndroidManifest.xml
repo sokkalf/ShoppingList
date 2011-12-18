@@ -2,10 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="no.opentech.shoppinglist"
       android:versionCode="2"
-      android:versionName="0.2">
+      android:versionName="0.2"
+      android:debuggable="true">
     <uses-sdk android:minSdkVersion="7" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <application android:name="ShoppingList" android:label="ShoppingList" android:icon="@drawable/grocery_bag">
+    <application android:name=".ShoppingListApp" android:label="ShoppingList" android:icon="@drawable/grocery_bag">
         <activity android:name=".activities.ViewShoppingListsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

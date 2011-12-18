@@ -47,6 +47,7 @@ import java.util.Date;
 public class DBHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private final Context myContext;
+    private static Logger log = Logger.getLogger(DBHelper.class);
 
 
     public DBHelper(Context context) {
@@ -56,7 +57,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.d("ShoppingList", "creating database");
+        log.debug("creating database");
         //db.execSQL(CREATE_STRING);
         try {
             InputStream is = myContext.getAssets().open("create_database.sql");

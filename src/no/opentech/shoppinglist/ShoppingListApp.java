@@ -25,20 +25,31 @@ package no.opentech.shoppinglist;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+
+import static android.content.pm.PackageManager.NameNotFoundException;
 
 /**
  * Created by: Christian Lønaas
  * Date: 15.12.11
  * Time: 23:12
  */
-public class ShoppingList extends Application {
-    private static ShoppingList instance;
+public class ShoppingListApp extends Application {
+    public static String appName = "ShoppingList";
+    private static boolean DEVELOPMENT_VERSION = true;
+    private static ShoppingListApp instance;
 
-    public ShoppingList() {
+    public ShoppingListApp() {
         instance = this;
     }
 
     public static Context getContext() {
         return instance;
+    }
+
+    public static boolean isRelease() {
+        return !DEVELOPMENT_VERSION;
     }
 }
