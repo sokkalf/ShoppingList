@@ -23,11 +23,19 @@
 
 package no.opentech.shoppinglist.utils;
 
+import android.os.Environment;
+import android.util.Log;
 import no.opentech.shoppinglist.crud.ItemRepository;
 import no.opentech.shoppinglist.crud.ShoppingListRepository;
 import no.opentech.shoppinglist.entities.Item;
 import no.opentech.shoppinglist.entities.ShoppingList;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.PrintWriter;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
 import java.util.Date;
 
 /**
@@ -36,10 +44,11 @@ import java.util.Date;
  * Time: 21:52
  */
 public class Utils {
-    private static final String TAG = "ShoppingList.Utils";
+    private static final String TAG = "ShoppingList/Utils";
     private static DBHelper dBHelper = getDBHelper();
     private static ItemRepository itemRepository = getItemRepository();
     private static ShoppingListRepository shoppingListRepository = getShoppingListRepository();
+    public static final String FILEROOT = "/ShoppingList/";
 
     public static long getTimeStamp(Date date) {
         if(null != date) return date.getTime();
@@ -100,5 +109,35 @@ public class Utils {
     public static ShoppingListRepository getShoppingListRepository() {
         if(null != shoppingListRepository) return shoppingListRepository;
         else return new ShoppingListRepository(getDBHelper());
+    }
+    
+    public static boolean writeFileToSDCard(String fileName, String data) {
+        Log.d(TAG, Environment.getExternalStorageDirectory().getAbsolutePath());
+        File f = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + FILEROOT);
+        if(!f.exists())
+            if(!f.mkdir()) return false;
+        
+        f = new File(Environment.getExternalStorageDirectory() + FILEROOT + fileName);
+        try {
+            PrintWriter out = new PrintWriter(f);
+            out.println(data);
+            out.close();
+        } catch(Exception e) {
+            return false;
+        }
+        Log.d(TAG, "Wrote " + f.getAbsolutePath());
+        return true;
+    }
+    
+    public static String readFileFromSDCard(String fileName) {
+        try {
+            FileInputStream stream = new FileInputStream(
+                    new File(Environment.getExternalStorageDirectory().getAbsolutePath() + FILEROOT + fileName));
+            FileChannel fc = stream.getChannel();
+            MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
+            return Charset.defaultCharset().decode(bb).toString();
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

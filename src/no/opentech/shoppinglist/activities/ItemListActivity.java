@@ -30,15 +30,18 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.InputType;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import no.opentech.shoppinglist.*;
 import no.opentech.shoppinglist.adapters.ItemAdapter;
+import no.opentech.shoppinglist.crud.ItemRepository;
 import no.opentech.shoppinglist.entities.Item;
 import no.opentech.shoppinglist.entities.ShoppingList;
 import no.opentech.shoppinglist.external.NumberPickerDialog;
+import no.opentech.shoppinglist.file.JSONHandler;
 import no.opentech.shoppinglist.utils.Utils;
 
 import java.util.ArrayList;
@@ -55,6 +58,7 @@ public class ItemListActivity extends ListActivity
     private Context context = no.opentech.shoppinglist.ShoppingList.getContext();
     private long shoppingListId;
     private boolean noList = false;
+    public static final String BACKUPFILE = "backup.json";
 
     /** Called when the activity is first created. */
     @Override
@@ -123,7 +127,12 @@ public class ItemListActivity extends ListActivity
             case R.id.deleteselected:
                 deleteSelected();
                 break;
-
+            case R.id.exportitems:
+                exportItems();
+                break;
+            case R.id.importitems:
+                importItems();
+                break;
         }
         return true;
     }
@@ -221,7 +230,6 @@ public class ItemListActivity extends ListActivity
                 }
             }
         });
-
         picker.show();
     }
 
@@ -232,17 +240,43 @@ public class ItemListActivity extends ListActivity
     }
     
     public void deleteSelected() {
-        int deleted=0;
-        for(int i=0; i<shoppingItems.size(); i++) {
-            Item item = shoppingItems.get(i);
-            if(item.isChecked()) {
-                shoppingItems.remove(item);
-                Utils.getItemRepository().delete(item);
-                deleted++;
-            }
+        ArrayList<Item> itemsToDelete = new ArrayList<Item>();
+        for (Item shoppingItem : shoppingItems) {
+            if (shoppingItem.isChecked())
+                itemsToDelete.add(shoppingItem);
         }
+        int deleted=itemsToDelete.size();
+        shoppingItems.removeAll(itemsToDelete);
+        for(Item i : itemsToDelete)
+            Utils.getItemRepository().delete(i);
         ((ItemAdapter)getListAdapter()).notifyDataSetChanged();
         Toast.makeText(context,((deleted != 0) ? "Deleted " + deleted + " items" : "No items deleted"), Toast.LENGTH_SHORT).show();
+    }
+
+    public void exportItems() {
+        JSONHandler j = new JSONHandler();
+        String json = j.createJSONFromItemList(shoppingItems);
+        if(!Utils.writeFileToSDCard(BACKUPFILE, json))
+            Toast.makeText(context, "Couldn't write export file", Toast.LENGTH_SHORT);
+        else Toast.makeText(context, "Export written to " + Environment.getExternalStorageDirectory().getAbsolutePath() + Utils.FILEROOT + 
+                BACKUPFILE, Toast.LENGTH_SHORT);
+    }
+
+    public void importItems() {
+        String json = Utils.readFileFromSDCard(BACKUPFILE);
+        if(null != json) {
+            JSONHandler j = new JSONHandler();
+            ArrayList<Item> importedItems = j.createItemListFromJSON(json);
+            for(Item i : importedItems) {
+                Log.d(TAG, i.getName() + " read from import");
+                long id = Utils.getItemRepository().insert(i);
+                i.setId(id);
+            }
+            shoppingItems.addAll(importedItems);
+            ((ItemAdapter)getListAdapter()).notifyDataSetChanged();
+            Toast.makeText(context, "Items imported", Toast.LENGTH_SHORT);
+        }
+        Toast.makeText(context, "Error importing", Toast.LENGTH_SHORT);
     }
 
     public void clearList() {
