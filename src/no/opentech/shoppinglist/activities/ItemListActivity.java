@@ -32,10 +32,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.InputType;
-import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import no.opentech.shoppinglist.*;
+import no.opentech.shoppinglist.R;
 import no.opentech.shoppinglist.adapters.ItemAdapter;
 import no.opentech.shoppinglist.entities.Item;
 import no.opentech.shoppinglist.entities.ShoppingList;
@@ -194,6 +194,7 @@ public class ItemListActivity extends ListActivity
 		final EditText input = new EditText(this);
         input.setWidth(200); // TODO: hard coded width is bad
         input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+        alert.setTitle("Item name");
 		alert.setView(input);
 		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
@@ -220,7 +221,8 @@ public class ItemListActivity extends ListActivity
     }
     
     public void setItemAmount(final Item item) {
-        NumberPickerDialog picker = new NumberPickerDialog(this, 0, 1);
+        NumberPickerDialog picker = new NumberPickerDialog(this, android.R.style.Theme_Dialog, 1);
+        picker.setTitle("Select amount");
         picker.setOnNumberSetListener(new NumberPickerDialog.OnNumberSetListener() {
             public void onNumberSet(int selectedNumber) {
                 for(int i=0; i<shoppingItems.size(); i++) {
