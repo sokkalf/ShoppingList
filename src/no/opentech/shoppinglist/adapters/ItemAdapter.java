@@ -110,9 +110,7 @@ public class ItemAdapter extends ArrayAdapter<Item> implements Filterable {
         if(null != item) {
             TextView text = (TextView) v.findViewById(R.id.itemtext);
             text.setText((item.getAmount() > 1) ? item.getAmount() + " " + item.getName() : item.getName());
-            if(item.isChecked())
-                text.setTextColor(Color.GREEN);
-            else text.setTextColor(Color.LTGRAY);
+            text.setTextColor((item.isChecked()) ? Color.GREEN : Color.LTGRAY);
         }
         return v;
     }

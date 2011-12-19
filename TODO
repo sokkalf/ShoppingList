@@ -1,7 +1,6 @@
 Shopping lists:
 implement "Show details" on shopping list
 add new items to an existing shopping list
-search lists
 add options menu to ShoppingListActivity
 
 Export/import:
