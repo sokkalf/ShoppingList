@@ -130,7 +130,7 @@ public class ItemAdapter extends ArrayAdapter<Item> implements Filterable {
             } else {
                 ArrayList<Item> newValues = new ArrayList<Item>();
                 for(Item i : items) {
-                    if(i.getName().toLowerCase().startsWith(constraint + ""))
+                    if(i.getName().toLowerCase().startsWith(constraint.toString().toLowerCase()))
                         newValues.add(i);
                 }
                 results.values = newValues;
@@ -146,5 +146,4 @@ public class ItemAdapter extends ArrayAdapter<Item> implements Filterable {
             notifyDataSetChanged();
         }
     }
-
 }
