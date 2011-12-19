@@ -25,8 +25,8 @@ package no.opentech.shoppinglist.activities;
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
-import no.opentech.shoppinglist.entities.Item;
 import no.opentech.shoppinglist.R;
+import no.opentech.shoppinglist.entities.Item;
 import no.opentech.shoppinglist.utils.Utils;
 
 import java.text.Format;

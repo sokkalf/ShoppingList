@@ -22,7 +22,6 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.widget.ImageButton;
 import no.opentech.shoppinglist.R;
-import no.opentech.shoppinglist.external.NumberPicker;
 
 /**
  * This class exists purely to cancel long click events.

@@ -25,7 +25,6 @@ package no.opentech.shoppinglist.crud;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 import no.opentech.shoppinglist.entities.Item;
 import no.opentech.shoppinglist.entities.ShoppingList;
 import no.opentech.shoppinglist.utils.DBHelper;

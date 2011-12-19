@@ -22,7 +22,6 @@ import android.content.DialogInterface.OnClickListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import no.opentech.shoppinglist.R;
-import no.opentech.shoppinglist.external.NumberPicker;
 
 public class NumberPickerDialog extends AlertDialog implements OnClickListener {
     private OnNumberSetListener mListener;

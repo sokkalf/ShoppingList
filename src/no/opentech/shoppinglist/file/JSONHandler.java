@@ -22,7 +22,6 @@
 
 package no.opentech.shoppinglist.file;
 
-import android.util.Log;
 import no.opentech.shoppinglist.entities.Item;
 import no.opentech.shoppinglist.utils.Logger;
 import no.opentech.shoppinglist.utils.Utils;

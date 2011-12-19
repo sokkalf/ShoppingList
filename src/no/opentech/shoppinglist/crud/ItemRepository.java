@@ -31,7 +31,6 @@ import no.opentech.shoppinglist.utils.Logger;
 import no.opentech.shoppinglist.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by: Christian Lønaas

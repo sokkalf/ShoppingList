@@ -41,6 +41,7 @@ import no.opentech.shoppinglist.ShoppingListApp;
 import no.opentech.shoppinglist.adapters.ViewShoppingListAdapter;
 import no.opentech.shoppinglist.entities.ShoppingList;
 import no.opentech.shoppinglist.utils.Utils;
+
 import java.util.ArrayList;
 
 /**

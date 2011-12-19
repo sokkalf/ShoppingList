@@ -32,8 +32,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
-import no.opentech.shoppinglist.entities.Item;
 import no.opentech.shoppinglist.R;
+import no.opentech.shoppinglist.entities.Item;
 
 import java.util.ArrayList;
 
@@ -76,8 +76,6 @@ public class ItemAdapter extends ArrayAdapter<Item> implements Filterable {
         filteredItems.add(pos, item);
         super.insert(item, pos);
     }
-
-
 
     @Override
     public int getCount() {

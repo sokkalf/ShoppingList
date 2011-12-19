@@ -25,11 +25,6 @@ package no.opentech.shoppinglist;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-
-import static android.content.pm.PackageManager.NameNotFoundException;
 
 /**
  * Created by: Christian Lønaas

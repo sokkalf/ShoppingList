@@ -24,7 +24,6 @@
 package no.opentech.shoppinglist.utils;
 
 import android.os.Environment;
-import android.util.Log;
 import no.opentech.shoppinglist.ShoppingListApp;
 import no.opentech.shoppinglist.crud.ItemRepository;
 import no.opentech.shoppinglist.crud.ShoppingListRepository;
