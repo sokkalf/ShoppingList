@@ -49,7 +49,7 @@ public class JSONHandler {
         try {
             int i=0;
             for(Item item : itemList) {
-                Log.d("ShoppingList/JSONHandler", "JSONifying " + item.getName());
+                log.debug("JSONifying " + item.getName());
                 jsonItems.put(i, item.getName());
                 jsonItems.put(1+i, item.getDescription());
                 jsonItems.put(2+i, item.getUsageCounter());
