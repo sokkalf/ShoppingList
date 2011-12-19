@@ -33,6 +33,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.text.InputType;
 import android.view.*;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import no.opentech.shoppinglist.*;
 import no.opentech.shoppinglist.R;
@@ -81,7 +82,8 @@ public class ItemListActivity extends ListActivity
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // toggle checked
-                Item selectedItem = shoppingItems.get(position);
+                Item selectedItem = ((ItemAdapter)getListAdapter()).getItem(position);
+                log.debug("Toggling item " + selectedItem.getName() + " at position " + position);
                 selectedItem.setChecked(!selectedItem.isChecked());
                 ((ItemAdapter)getListAdapter()).notifyDataSetChanged();
             }
@@ -98,8 +100,9 @@ public class ItemListActivity extends ListActivity
     
     @Override
     public boolean onSearchRequested() {
-        Toast.makeText(context, "Search not available yet", Toast.LENGTH_SHORT).show();
-        return super.onSearchRequested();
+        InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        mgr.showSoftInput(getListView(), InputMethodManager.SHOW_IMPLICIT);
+        return true;
     }
     
     /* create the menu */
@@ -155,7 +158,7 @@ public class ItemListActivity extends ListActivity
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        Item selectedItem = shoppingItems.get(info.position);
+        Item selectedItem = ((ItemAdapter)getListAdapter()).getItem(info.position);
 
         switch(item.getItemId()) {
             case R.id.setitemamount:
@@ -205,6 +208,7 @@ public class ItemListActivity extends ListActivity
                     long id = Utils.getItemRepository().insert(item);
                     item.setId(id);
                     shoppingItems.add(item);
+                    ((ItemAdapter)getListAdapter()).add(item);
                 }
                 ((ItemAdapter) getListAdapter()).notifyDataSetChanged();
 			}
@@ -239,6 +243,7 @@ public class ItemListActivity extends ListActivity
     public void removeItem(Item item) {
         Utils.getItemRepository().delete(item);
         shoppingItems.remove(item);
+        ((ItemAdapter)getListAdapter()).remove(item);
         ((ItemAdapter)getListAdapter()).notifyDataSetChanged();
     }
     
@@ -250,8 +255,10 @@ public class ItemListActivity extends ListActivity
         }
         int deleted=itemsToDelete.size();
         shoppingItems.removeAll(itemsToDelete);
-        for(Item i : itemsToDelete)
+        for(Item i : itemsToDelete) {
+            ((ItemAdapter)getListAdapter()).remove(i);
             Utils.getItemRepository().delete(i);
+        }
         ((ItemAdapter)getListAdapter()).notifyDataSetChanged();
         Toast.makeText(context,((deleted != 0) ? "Deleted " + deleted + " items" : "No items deleted"), Toast.LENGTH_SHORT).show();
     }
@@ -274,6 +281,7 @@ public class ItemListActivity extends ListActivity
                 log.debug(i.getName() + " read from import");
                 long id = Utils.getItemRepository().insert(i);
                 i.setId(id);
+                ((ItemAdapter)getListAdapter()).add(i);
             }
             shoppingItems.addAll(importedItems);
             ((ItemAdapter)getListAdapter()).notifyDataSetChanged();
