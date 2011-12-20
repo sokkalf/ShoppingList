@@ -88,7 +88,6 @@ public class ShoppingListActivity extends ListActivity {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Item selectedItem = visibleItems.get(position);
-                log.debug("selected item : " + selectedItem.getName() + " , position : " + position + " , firstSeen : " + selectedItem.getFirstSeen());
                 if(!selectedItem.isChecked()) { // this could be better, but OK for now..
                     numInLine++;
                     selectedItem.setChecked(true);
@@ -109,8 +108,10 @@ public class ShoppingListActivity extends ListActivity {
         Intent resultIntent = new Intent();
         if(shoppingList.allItemsChecked()) {
             updateNumbersAndDeleteList();
+            log.debug("Shoppinglist '" + shoppingList.getName() + "' finished, removing.");
             setResult(Activity.RESULT_OK, resultIntent);
         } else {
+            log.debug("Shoppinglist '" + shoppingList.getName() + " cancelled.");
             setResult(Activity.RESULT_CANCELED, resultIntent);
         }
         this.finish();

@@ -167,7 +167,7 @@ public class ItemListActivity extends ListActivity
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        Item selectedItem = ((ItemAdapter)getListAdapter()).getItem(info.position);
+        Item selectedItem = adapter.getItem(info.position);
 
         switch(item.getItemId()) {
             case R.id.setitemamount:
@@ -209,7 +209,6 @@ public class ItemListActivity extends ListActivity
                     item.setName(newItem);
                     model.addItem(item);
                 }
-                update();
 			}
 		});
 
@@ -241,18 +240,15 @@ public class ItemListActivity extends ListActivity
 
     public void removeItem(Item item) {
         model.removeItem(item);
-        update();
     }
     
     public void deleteSelected() {
         ArrayList<Item> itemsToDelete = new ArrayList<Item>();
-        for (Item shoppingItem : model.getItemList()) {
-            if (shoppingItem.isChecked())
-                itemsToDelete.add(shoppingItem);
-        }
+        for (Item shoppingItem : model.getCheckedItems())
+            itemsToDelete.add(shoppingItem);
+
         int deleted=itemsToDelete.size();
         model.removeItems(itemsToDelete);
-        update();
         Toast.makeText(context,((deleted != 0) ? "Deleted " + deleted + " items" : "No items deleted"), Toast.LENGTH_SHORT).show();
     }
 
@@ -265,13 +261,11 @@ public class ItemListActivity extends ListActivity
 
     public void importItems() {
         if(model.importItems()) {
-            update();
             Toast.makeText(context, "Items imported", Toast.LENGTH_SHORT);
         } else Toast.makeText(context, "Error importing", Toast.LENGTH_SHORT);
     }
 
     public void clearList() {
         model.clearCheckedItems();
-        update();
     }
 }

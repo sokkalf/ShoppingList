@@ -76,9 +76,7 @@ public class ItemAdapter extends ArrayAdapter<Item> implements Filterable {
     @Override
     public void add(Item item) {
         log.debug("adding item " + item.getName());
-        log.debug("adapter " + ((contains(item) ? "already knows about" : "have never seen")) + " item " + item.getName());
         filteredItems.add(item);
-        //super.add(item);
     }
     
     @Override 
@@ -90,7 +88,6 @@ public class ItemAdapter extends ArrayAdapter<Item> implements Filterable {
     
     @Override
     public void insert(Item item, int pos) {
-        log.debug("inserting item " + item.getName() + " at position " + pos);
         filteredItems.add(pos, item);
         super.insert(item, pos);
     }

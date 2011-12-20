@@ -40,6 +40,7 @@ public class ItemListModel {
     private ArrayList<Item> itemList;
     private ItemAdapter adapter;
     private static Logger log = Logger.getLogger(ItemListModel.class);
+    private boolean multiDelete = false;
     
     public ItemListModel() {
         itemList = Utils.getItemRepository().getItemsOrderedByUsages();
@@ -61,18 +62,22 @@ public class ItemListModel {
         if((null != adapter) && (!adapter.contains(item))) {
             adapter.add(item);
         }
+        update();
     }
     
     public void removeItems(ArrayList<Item> items) {
+        multiDelete = true; // prevent update() from being called for each item
         for(Item i : items) {
             removeItem(i);
         }
+        multiDelete = false;
+        update();
     }
 
     public Item getItem(int pos) {
         return itemList.get(pos);
     }
-    
+
     public void removeItem(Item item) {
         log.debug("removing item " + item.getName());
         itemList.remove(item);
@@ -80,6 +85,7 @@ public class ItemListModel {
             adapter.remove(item);
         }
         Utils.getItemRepository().delete(item);
+        if (!multiDelete) update();
     }
 
     public boolean exportItems() {
@@ -99,6 +105,7 @@ public class ItemListModel {
                 i.setId(id);
                 addItem(i);
             }
+            update();
             return true;
         }
         return false;
@@ -114,6 +121,7 @@ public class ItemListModel {
     
     public void clearCheckedItems() {
         for(Item item : getCheckedItems()) item.setChecked(false);
+        update();
     }
     
     public void save(long shoppingListId) {
@@ -124,4 +132,9 @@ public class ItemListModel {
             Utils.getShoppingListRepository().addItemToShoppingList(item, sl);
         }
     }
+
+    public void update() {
+        if(null != adapter) adapter.notifyDataSetChanged();
+    }
+
 }
