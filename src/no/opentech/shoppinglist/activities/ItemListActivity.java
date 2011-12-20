@@ -199,6 +199,7 @@ public class ItemListActivity extends ListActivity
 		final EditText input = new EditText(this);
         input.setWidth(200); // TODO: hard coded width is bad
         input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+        input.setHint("Enter name for the item");
         alert.setTitle("Item name");
 		alert.setView(input);
 		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {

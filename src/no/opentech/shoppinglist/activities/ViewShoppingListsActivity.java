@@ -180,6 +180,8 @@ public class ViewShoppingListsActivity extends ListActivity {
         input.setWidth(200); // TODO: hard coded width is bad
         input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         alert.setTitle("Type a name");
+        input.setText("My list");
+        input.setSelection(0,7);
         alert.setView(input);
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
