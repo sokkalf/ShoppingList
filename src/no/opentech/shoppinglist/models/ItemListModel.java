@@ -1,0 +1,127 @@
+/*
+ * ShoppingList for Android
+ * (C)2011 by Christian Lønaas
+ *    <christian dot lonaas at discombobulator dot org>
+ *
+ * This file is part of ShoppingList.
+ *
+ * ShoppingList is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * ShoppingList is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with ShoppingList.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+package no.opentech.shoppinglist.models;
+
+import no.opentech.shoppinglist.adapters.ItemAdapter;
+import no.opentech.shoppinglist.entities.Item;
+import no.opentech.shoppinglist.entities.ShoppingList;
+import no.opentech.shoppinglist.file.JSONHandler;
+import no.opentech.shoppinglist.utils.Logger;
+import no.opentech.shoppinglist.utils.Utils;
+
+import java.util.ArrayList;
+
+/**
+ * Created by: Christian Lønaas
+ * Date: 20.12.11
+ * Time: 17:47
+ */
+public class ItemListModel {
+    private ArrayList<Item> itemList;
+    private ItemAdapter adapter;
+    private static Logger log = Logger.getLogger(ItemListModel.class);
+    
+    public ItemListModel() {
+        itemList = Utils.getItemRepository().getItemsOrderedByUsages();
+    }
+
+    public void setAdapter(ItemAdapter adapter) {
+        this.adapter = adapter;
+    }
+    
+    public ArrayList<Item> getItemList() {
+        return itemList;
+    }
+    
+    public void addItem(Item item) {
+        log.debug("adding item " + item.getName());
+        long id = Utils.getItemRepository().insert(item);
+        item.setId(id);
+        itemList.add(item);
+        if((null != adapter) && (!adapter.contains(item))) {
+            adapter.add(item);
+        }
+    }
+    
+    public void removeItems(ArrayList<Item> items) {
+        for(Item i : items) {
+            removeItem(i);
+        }
+    }
+
+    public Item getItem(int pos) {
+        return itemList.get(pos);
+    }
+    
+    public void removeItem(Item item) {
+        log.debug("removing item " + item.getName());
+        itemList.remove(item);
+        if((null != adapter) && (adapter.contains(item))) {
+            adapter.remove(item);
+        }
+        Utils.getItemRepository().delete(item);
+    }
+
+    public boolean exportItems() {
+        JSONHandler j = new JSONHandler();
+        String json = j.createJSONFromItemList(itemList);
+        return Utils.writeFileToSDCard(Utils.BACKUPFILE, json);
+    }
+    
+    public boolean importItems() {
+        String json = Utils.readFileFromSDCard(Utils.BACKUPFILE);
+        if(null != json) {
+            JSONHandler j = new JSONHandler();
+            ArrayList<Item> importedItems = j.createItemListFromJSON(json);
+            for(Item i : importedItems) {
+                log.debug(i.getName() + " read from import");
+                long id = Utils.getItemRepository().insert(i);
+                i.setId(id);
+                addItem(i);
+            }
+            return true;
+        }
+        return false;
+    }
+    
+    public ArrayList<Item> getCheckedItems() {
+        ArrayList<Item> checkedItems = new ArrayList<Item>();
+        for(Item item : itemList)
+            if(item.isChecked()) checkedItems.add(item);
+
+        return checkedItems;
+    }
+    
+    public void clearCheckedItems() {
+        for(Item item : getCheckedItems()) item.setChecked(false);
+    }
+    
+    public void save(long shoppingListId) {
+        ShoppingList sl = Utils.getShoppingListRepository().getShoppingListById(shoppingListId);
+        for(Item item : getCheckedItems()) {
+            item.incrementUsageCounter();
+            Utils.getItemRepository().update(item);
+            Utils.getShoppingListRepository().addItemToShoppingList(item, sl);
+        }
+    }
+}

@@ -45,6 +45,7 @@ import no.opentech.shoppinglist.entities.Item;
 import no.opentech.shoppinglist.entities.ShoppingList;
 import no.opentech.shoppinglist.external.NumberPickerDialog;
 import no.opentech.shoppinglist.file.JSONHandler;
+import no.opentech.shoppinglist.models.ItemListModel;
 import no.opentech.shoppinglist.utils.Logger;
 import no.opentech.shoppinglist.utils.Utils;
 
@@ -57,12 +58,11 @@ import java.util.ArrayList;
  */
 public class ItemListActivity extends ListActivity
 {
-    private static final String TAG = "ShoppingList/ItemListActivity";
-    private ArrayList<Item> shoppingItems;
     private Context context = ShoppingListApp.getContext();
+    private ItemListModel model;
+    private ItemAdapter adapter;
     private long shoppingListId;
     private boolean noList = false;
-    public static final String BACKUPFILE = "backup.json";
     public static Logger log;
 
     /** Called when the activity is first created. */
@@ -72,12 +72,13 @@ public class ItemListActivity extends ListActivity
         super.onCreate(savedInstanceState);
 
         log = Logger.getLogger(ItemListActivity.class);
-        shoppingItems = new ArrayList<Item>();
-        shoppingItems = Utils.getItemRepository().getItemsOrderedByUsages();
+        model = new ItemListModel();
         shoppingListId = getIntent().getLongExtra("shoppingListId", 0);
         noList = getIntent().getBooleanExtra("noList", false);
         setTitle((!noList) ? "Select items" : "Manage items");
-        setListAdapter(new ItemAdapter(context, R.layout.list_item, shoppingItems));
+        adapter = new ItemAdapter(context, R.layout.list_item, model);
+        setListAdapter(adapter);
+        model.setAdapter(adapter);
         ListView lv = getListView();
         registerForContextMenu(lv);
         lv.setTextFilterEnabled(true);
@@ -85,12 +86,16 @@ public class ItemListActivity extends ListActivity
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // toggle checked
-                Item selectedItem = ((ItemAdapter)getListAdapter()).getItem(position);
+                Item selectedItem = adapter.getItem(position);
                 log.debug("Toggling item " + selectedItem.getName() + " at position " + position);
                 selectedItem.setChecked(!selectedItem.isChecked());
-                ((ItemAdapter)getListAdapter()).notifyDataSetChanged();
+                update();
             }
         });
+    }
+    
+    public void update() {
+        adapter.notifyDataSetChanged();
     }
     
     @Override
@@ -103,6 +108,7 @@ public class ItemListActivity extends ListActivity
     
     @Override
     public boolean onSearchRequested() {
+        log.debug("Search requested");
         InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         mgr.showSoftInput(getListView(), InputMethodManager.SHOW_IMPLICIT);
         return true;
@@ -180,14 +186,7 @@ public class ItemListActivity extends ListActivity
     }
     
     public void saveList() {
-        ShoppingList sl = Utils.getShoppingListRepository().getShoppingListById(shoppingListId);
-        for(Item item : shoppingItems) {
-            if(item.isChecked()) {
-                item.incrementUsageCounter();
-                Utils.getItemRepository().update(item);
-                Utils.getShoppingListRepository().addItemToShoppingList(item, sl);
-            }
-        }
+        model.save(shoppingListId);
 
         Intent resultIntent = new Intent();
         setResult(Activity.RESULT_OK, resultIntent);
@@ -208,12 +207,9 @@ public class ItemListActivity extends ListActivity
                 Item item = new Item();
                 if(!newItem.equals("")) {
                     item.setName(newItem);
-                    long id = Utils.getItemRepository().insert(item);
-                    item.setId(id);
-                    shoppingItems.add(item);
-                    ((ItemAdapter)getListAdapter()).add(item);
+                    model.addItem(item);
                 }
-                ((ItemAdapter) getListAdapter()).notifyDataSetChanged();
+                update();
 			}
 		});
 
@@ -232,10 +228,10 @@ public class ItemListActivity extends ListActivity
         picker.setTitle("Select amount");
         picker.setOnNumberSetListener(new NumberPickerDialog.OnNumberSetListener() {
             public void onNumberSet(int selectedNumber) {
-                for(int i=0; i<shoppingItems.size(); i++) {
-                    if(item.getId() == shoppingItems.get(i).getId()) {
-                        shoppingItems.get(i).setAmount(selectedNumber);
-                        ((ItemAdapter) getListAdapter()).notifyDataSetChanged();
+                for(int i=0; i<model.getItemList().size(); i++) {
+                    if(item.getId() == model.getItem(i).getId()) {
+                        model.getItem(i).setAmount(selectedNumber);
+                        update();
                     }
                 }
             }
@@ -244,56 +240,38 @@ public class ItemListActivity extends ListActivity
     }
 
     public void removeItem(Item item) {
-        Utils.getItemRepository().delete(item);
-        shoppingItems.remove(item);
-        ((ItemAdapter)getListAdapter()).remove(item);
-        ((ItemAdapter)getListAdapter()).notifyDataSetChanged();
+        model.removeItem(item);
+        update();
     }
     
     public void deleteSelected() {
         ArrayList<Item> itemsToDelete = new ArrayList<Item>();
-        for (Item shoppingItem : shoppingItems) {
+        for (Item shoppingItem : model.getItemList()) {
             if (shoppingItem.isChecked())
                 itemsToDelete.add(shoppingItem);
         }
         int deleted=itemsToDelete.size();
-        shoppingItems.removeAll(itemsToDelete);
-        for(Item i : itemsToDelete) {
-            ((ItemAdapter)getListAdapter()).remove(i);
-            Utils.getItemRepository().delete(i);
-        }
-        ((ItemAdapter)getListAdapter()).notifyDataSetChanged();
+        model.removeItems(itemsToDelete);
+        update();
         Toast.makeText(context,((deleted != 0) ? "Deleted " + deleted + " items" : "No items deleted"), Toast.LENGTH_SHORT).show();
     }
 
     public void exportItems() {
-        JSONHandler j = new JSONHandler();
-        String json = j.createJSONFromItemList(shoppingItems);
-        if(!Utils.writeFileToSDCard(BACKUPFILE, json))
+        if(!model.exportItems())
             Toast.makeText(context, "Couldn't write export file", Toast.LENGTH_SHORT);
         else Toast.makeText(context, "Export written to " + Environment.getExternalStorageDirectory().getAbsolutePath() + Utils.FILEROOT + 
-                BACKUPFILE, Toast.LENGTH_SHORT);
+                Utils.BACKUPFILE, Toast.LENGTH_SHORT);
     }
 
     public void importItems() {
-        String json = Utils.readFileFromSDCard(BACKUPFILE);
-        if(null != json) {
-            JSONHandler j = new JSONHandler();
-            ArrayList<Item> importedItems = j.createItemListFromJSON(json);
-            for(Item i : importedItems) {
-                log.debug(i.getName() + " read from import");
-                long id = Utils.getItemRepository().insert(i);
-                i.setId(id);
-                ((ItemAdapter)getListAdapter()).add(i);
-            }
-            shoppingItems.addAll(importedItems);
-            ((ItemAdapter)getListAdapter()).notifyDataSetChanged();
+        if(model.importItems()) {
+            update();
             Toast.makeText(context, "Items imported", Toast.LENGTH_SHORT);
         } else Toast.makeText(context, "Error importing", Toast.LENGTH_SHORT);
     }
 
     public void clearList() {
-        for(Item item : shoppingItems) item.setChecked(false);
-        ((ItemAdapter)getListAdapter()).notifyDataSetChanged();
+        model.clearCheckedItems();
+        update();
     }
 }

@@ -49,6 +49,7 @@ public class Utils {
     private static ItemRepository itemRepository = getItemRepository();
     private static ShoppingListRepository shoppingListRepository = getShoppingListRepository();
     public static final String FILEROOT = "/ShoppingList/";
+    public static final String BACKUPFILE = "backup.json";
 
     public static long getTimeStamp(Date date) {
         if(null != date) return date.getTime();

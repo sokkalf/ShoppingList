@@ -34,6 +34,8 @@ import android.widget.Filterable;
 import android.widget.TextView;
 import no.opentech.shoppinglist.R;
 import no.opentech.shoppinglist.entities.Item;
+import no.opentech.shoppinglist.models.ItemListModel;
+import no.opentech.shoppinglist.utils.Logger;
 
 import java.util.ArrayList;
 
@@ -46,6 +48,14 @@ public class ItemAdapter extends ArrayAdapter<Item> implements Filterable {
     private ArrayList<Item> filteredItems;
     private ArrayList<Item> items;
     private Filter filter;
+    private static Logger log = Logger.getLogger(ItemAdapter.class);
+
+    public ItemAdapter(Context context, int textViewResourceId, ItemListModel model) {
+        super(context, textViewResourceId, model.getItemList());
+        this.items = model.getItemList();
+        filteredItems = new ArrayList<Item>();
+        cloneItems();
+    }
 
     public ItemAdapter(Context context, int textViewResourceId, ArrayList<Item> items) {
         super(context, textViewResourceId, items);
@@ -59,20 +69,28 @@ public class ItemAdapter extends ArrayAdapter<Item> implements Filterable {
         for(Item i : items) filteredItems.add(i);
     }
     
+    public boolean contains(Item item) {
+        return filteredItems.contains(item);
+    }
+    
     @Override
     public void add(Item item) {
+        log.debug("adding item " + item.getName());
+        log.debug("adapter " + ((contains(item) ? "already knows about" : "have never seen")) + " item " + item.getName());
         filteredItems.add(item);
-        super.add(item);
+        //super.add(item);
     }
     
     @Override 
     public void remove(Item item) {
+        log.debug("removing item " + item.getName());
         filteredItems.remove(item);
         super.remove(item);
     }
     
     @Override
     public void insert(Item item, int pos) {
+        log.debug("inserting item " + item.getName() + " at position " + pos);
         filteredItems.add(pos, item);
         super.insert(item, pos);
     }
@@ -111,6 +129,8 @@ public class ItemAdapter extends ArrayAdapter<Item> implements Filterable {
             TextView text = (TextView) v.findViewById(R.id.itemtext);
             text.setText((item.getAmount() > 1) ? item.getAmount() + " " + item.getName() : item.getName());
             text.setTextColor((item.isChecked()) ? Color.GREEN : Color.LTGRAY);
+        } else {
+            log.debug("Item is null");
         }
         return v;
     }
