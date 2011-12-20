@@ -289,8 +289,7 @@ public class ItemListActivity extends ListActivity
             shoppingItems.addAll(importedItems);
             ((ItemAdapter)getListAdapter()).notifyDataSetChanged();
             Toast.makeText(context, "Items imported", Toast.LENGTH_SHORT);
-        }
-        Toast.makeText(context, "Error importing", Toast.LENGTH_SHORT);
+        } else Toast.makeText(context, "Error importing", Toast.LENGTH_SHORT);
     }
 
     public void clearList() {
