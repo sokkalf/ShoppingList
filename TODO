@@ -10,3 +10,4 @@ Menu items are too easy to hit by accident, move export/import to their own acti
 Other:
 add some statistics
 user settings
+replace hardcoded strings with values in strings.xml
