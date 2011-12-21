@@ -40,9 +40,13 @@ import no.opentech.shoppinglist.R;
 import no.opentech.shoppinglist.ShoppingListApp;
 import no.opentech.shoppinglist.adapters.ViewShoppingListAdapter;
 import no.opentech.shoppinglist.entities.ShoppingList;
+import no.opentech.shoppinglist.models.ViewShoppingListsModel;
 import no.opentech.shoppinglist.utils.Utils;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by: Christian Lønaas
@@ -51,33 +55,36 @@ import java.util.ArrayList;
  */
 public class ViewShoppingListsActivity extends ListActivity {
     private Context context = ShoppingListApp.getContext();
-    private ArrayList<ShoppingList> shoppingLists;
+    private ViewShoppingListsModel model;
     private static final int ITEMLISTACTIVITY = 98;
     private static final int SHOPPINGLISTACTIVITY = 99;
     
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("Shopping lists");
-        shoppingLists = Utils.getShoppingListRepository().getShoppingLists();
-        shoppingLists.add(new ShoppingList().getDefaultList());
-        setListAdapter(new ViewShoppingListAdapter(context, R.layout.list_shoppinglists, shoppingLists));
+        model = new ViewShoppingListsModel();
+
+        setListAdapter(new ViewShoppingListAdapter(context, R.layout.list_shoppinglists, model.getShoppingLists()));
         ListView lv = getListView();
         registerForContextMenu(lv);
         lv.setTextFilterEnabled(true);
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // toggle checked
-                ShoppingList selectedItem = shoppingLists.get(position);
+                ShoppingList selectedItem = model.getShoppingList(position);
                 long shoppingListId = selectedItem.getId();
                 if (!selectedItem.isDefaultList()) {
                     openShoppingList(shoppingListId);
                 } else {
                     createNewShoppingList();
                 }
-                ((ViewShoppingListAdapter) getListAdapter()).notifyDataSetChanged();
+                update();
             }
         });
+    }
+
+    public void update() {
+        ((ViewShoppingListAdapter) getListAdapter()).notifyDataSetChanged();
     }
     
     @Override
@@ -88,22 +95,18 @@ public class ViewShoppingListsActivity extends ListActivity {
                 if (resultCode == Activity.RESULT_CANCELED) {
                     Toast.makeText(context, "Canceled..", Toast.LENGTH_SHORT).show();
                     long id = data.getLongExtra("shoppingListId", 0);
-                    Utils.getShoppingListRepository().deleteById(id);
-                    shoppingLists.clear();
-                    shoppingLists.addAll(Utils.getShoppingListRepository().getShoppingLists());
-                    shoppingLists.add(new ShoppingList().getDefaultList());
+                    model.deleteShoppingListById(id);
+                    update();
                 }
                 break;
             case SHOPPINGLISTACTIVITY:
                 if(resultCode == Activity.RESULT_OK) {
                     Toast.makeText(context, "Finished, removing list", Toast.LENGTH_SHORT).show();
-                    shoppingLists.clear();
-                    shoppingLists.addAll(Utils.getShoppingListRepository().getShoppingLists());
-                    shoppingLists.add(new ShoppingList().getDefaultList());
+                    model.refresh();
+                    update();
                 }
                 break;
         }
-        ((ViewShoppingListAdapter) getListAdapter()).notifyDataSetChanged();
     }
 
     /* create the menu */
@@ -139,7 +142,7 @@ public class ViewShoppingListsActivity extends ListActivity {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        ShoppingList selectedItem = shoppingLists.get(info.position);
+        ShoppingList selectedItem = model.getShoppingList(info.position);
         
         switch(item.getItemId()) {
             case R.id.viewshoppinglistdetails:
@@ -152,7 +155,6 @@ public class ViewShoppingListsActivity extends ListActivity {
                     deleteShoppingList(selectedItem);
                 break;
         }
-        
         return true;
     }
 
@@ -180,8 +182,10 @@ public class ViewShoppingListsActivity extends ListActivity {
         input.setWidth(200); // TODO: hard coded width is bad
         input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         alert.setTitle("Type a name");
-        input.setText("My list");
-        input.setSelection(0,7);
+        DateFormat f = DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
+        String text = "My List " + f.format(new Date());
+        input.setText(text);
+        input.setSelection(0, text.length());
         alert.setView(input);
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
@@ -189,10 +193,8 @@ public class ViewShoppingListsActivity extends ListActivity {
                 ShoppingList sl = new ShoppingList();
                 if(!newList.equals("")) {
                     sl.setName(newList);
-                    long id = Utils.getShoppingListRepository().insert(sl);
-                    sl.setId(id);
-                    shoppingLists.add(0, sl);
-                    ((ViewShoppingListAdapter) getListAdapter()).notifyDataSetChanged();
+                    long id = model.addNewShoppingList(sl);
+                    update();
                     goToItemSelection(id);
                 }
             }
@@ -209,8 +211,7 @@ public class ViewShoppingListsActivity extends ListActivity {
     }
     
     public void deleteShoppingList(ShoppingList sl) {
-        Utils.getShoppingListRepository().delete(sl);
-        shoppingLists.remove(sl);
-        ((ViewShoppingListAdapter) getListAdapter()).notifyDataSetChanged();
+        model.deleteShoppingList(sl);
+        update();
     }
 }

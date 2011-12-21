@@ -20,7 +20,6 @@
  *
  */
 
-
 package no.opentech.shoppinglist.activities;
 
 import android.app.Activity;
@@ -43,6 +42,7 @@ import no.opentech.shoppinglist.ShoppingListApp;
 import no.opentech.shoppinglist.adapters.ShoppingListAdapter;
 import no.opentech.shoppinglist.entities.Item;
 import no.opentech.shoppinglist.entities.ShoppingList;
+import no.opentech.shoppinglist.models.ShoppingListModel;
 import no.opentech.shoppinglist.utils.Logger;
 import no.opentech.shoppinglist.utils.Utils;
 
@@ -60,7 +60,7 @@ public class ShoppingListActivity extends ListActivity {
     private float mAccel; // acceleration apart from gravity
     private float mAccelCurrent; // current acceleration including gravity
     private float mAccelLast; // last acceleration including gravity
-    private ShoppingList shoppingList;
+    private ShoppingListModel model;
     private ArrayList<Item> visibleItems;
     private static Logger log = Logger.getLogger(ShoppingListActivity.class);
 
@@ -75,12 +75,14 @@ public class ShoppingListActivity extends ListActivity {
         mAccelLast = SensorManager.GRAVITY_EARTH;
         
         long id = getIntent().getLongExtra("shoppingListId", 0);
-        shoppingList = Utils.getShoppingListRepository().getShoppingListById(id);
+        model = new ShoppingListModel(id);
         numInLine = 0;
-        setTitle(shoppingList.getName());
+        setTitle(model.getName());
         visibleItems = new ArrayList<Item>();
-        visibleItems.addAll(shoppingList.getItems());
-        setListAdapter(new ShoppingListAdapter(context, R.layout.list_item, visibleItems));
+        visibleItems.addAll(model.getShoppingListItems());
+        ShoppingListAdapter adapter = new ShoppingListAdapter(context, R.layout.list_item, visibleItems);
+        setListAdapter(adapter);
+        model.setAdapter(adapter);
         ListView lv = getListView();
         registerForContextMenu(lv);
         lv.setTextFilterEnabled(true);
@@ -97,21 +99,24 @@ public class ShoppingListActivity extends ListActivity {
                     selectedItem.setNumberInLine(0);
                     numInLine--;
                 }
-                ((ShoppingListAdapter)getListAdapter()).notifyDataSetChanged();
-
+                update();
             }
         });        
+    }
+
+    public void update() {
+        ((ShoppingListAdapter)getListAdapter()).notifyDataSetChanged();
     }
 
     @Override
     public void onBackPressed() {
         Intent resultIntent = new Intent();
-        if(shoppingList.allItemsChecked()) {
-            updateNumbersAndDeleteList();
-            log.debug("Shoppinglist '" + shoppingList.getName() + "' finished, removing.");
+        if(model.allItemsChecked()) {
+            model.updateNumbersAndDeleteList();
+            log.debug("Shoppinglist '" + model.getName() + "' finished, removing.");
             setResult(Activity.RESULT_OK, resultIntent);
         } else {
-            log.debug("Shoppinglist '" + shoppingList.getName() + " cancelled.");
+            log.debug("Shoppinglist '" + model.getName() + " cancelled.");
             setResult(Activity.RESULT_CANCELED, resultIntent);
         }
         this.finish();
@@ -137,22 +142,12 @@ public class ShoppingListActivity extends ListActivity {
                 this.startActivity(intent);
                 break;
             case R.id.removefromshoppinglist:
-                shoppingList.getItems().remove(selectedItem);
                 visibleItems.remove(selectedItem);
-                Utils.getShoppingListRepository().removeItemFromShoppingList(selectedItem, shoppingList);
-                ((ShoppingListAdapter)getListAdapter()).notifyDataSetChanged();
+                model.removeItem(selectedItem);
+                update();
                 break;
         }
         return true;
-    }
-    
-    public void updateNumbersAndDeleteList() {
-        for(Item item : shoppingList.getItems()) {
-            if(item.getUsageCounter() < 1) item.setAvgNumberInLine(item.getAvgNumberInLine() + item.getNumberInLine() / 2);
-            else item.setAvgNumberInLine(item.getNumberInLine());
-            Utils.getItemRepository().update(item);
-        }
-        Utils.getShoppingListRepository().delete(shoppingList);
     }
 
     private final SensorEventListener mSensorListener = new SensorEventListener() {
@@ -167,15 +162,15 @@ public class ShoppingListActivity extends ListActivity {
             mAccel = mAccel * 0.9f + delta; // perform low-cut filter
             
             if(mAccel > 5) {
-                if(shoppingList.allItemsChecked()) {
+                if(model.allItemsChecked()) {
                     Intent resultIntent = new Intent();
-                    updateNumbersAndDeleteList();
+                    model.updateNumbersAndDeleteList();
                     setResult(Activity.RESULT_OK, resultIntent);
                     finish();
                 } else {
-                    shoppingList.hideCheckedItems();
-                    visibleItems.removeAll(shoppingList.getHiddenItems());
-                    ((ShoppingListAdapter)getListAdapter()).notifyDataSetChanged();
+                    model.hideCheckedItems();
+                    visibleItems.removeAll(model.getHiddenShoppingListItems());
+                    update();
                 }
             }
         }

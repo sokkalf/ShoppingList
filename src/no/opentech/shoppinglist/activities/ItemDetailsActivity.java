@@ -27,6 +27,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 import no.opentech.shoppinglist.R;
 import no.opentech.shoppinglist.entities.Item;
+import no.opentech.shoppinglist.models.ItemDetailsModel;
 import no.opentech.shoppinglist.utils.Utils;
 
 import java.text.Format;
@@ -38,6 +39,8 @@ import java.text.SimpleDateFormat;
  * Time: 23:39
  */
 public class ItemDetailsActivity extends Activity {
+    private ItemDetailsModel model;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,13 +52,13 @@ public class ItemDetailsActivity extends Activity {
         TextView itemAvgNumInLineText = (TextView) this.findViewById(R.id.itemavgnuminline);
 
         long itemId = getIntent().getLongExtra("itemId", 0);
-        Item item = Utils.getItemRepository().getItemById(itemId);
-        Format formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        itemNameText.setText(item.getName());
-        itemCreatedDateText.setText(formatter.format(item.getFirstSeen()));
-        itemUsageCounter.setText(Integer.toString(item.getUsageCounter()));
-        itemUpdatedDateText.setText(formatter.format(item.getLastSeen()));
-        itemAvgNumInLineText.setText(Integer.toString(item.getAvgNumberInLine()));
+        model = new ItemDetailsModel(itemId);
+
+        itemNameText.setText(model.getItemName());
+        itemCreatedDateText.setText(model.getCreatedAsString());
+        itemUsageCounter.setText(Integer.toString(model.getItemUsageCounter()));
+        itemUpdatedDateText.setText(model.getUpdatedAsString());
+        itemAvgNumInLineText.setText(Integer.toString(model.getItemAvgNumberInLine()));
     }
 }
 
