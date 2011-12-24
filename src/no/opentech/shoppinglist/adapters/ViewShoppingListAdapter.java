@@ -24,6 +24,7 @@
 package no.opentech.shoppinglist.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import no.opentech.shoppinglist.R;
 import no.opentech.shoppinglist.entities.ShoppingList;
+import no.opentech.shoppinglist.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -52,12 +54,17 @@ public class ViewShoppingListAdapter extends ArrayAdapter<ShoppingList> {
         View v = convertView;
         if (v == null) {
             LayoutInflater vi = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v = vi.inflate(R.layout.row, null);
+            v = vi.inflate(R.layout.shoppinglists_row, null);
         }
         ShoppingList list = lists.get(position);
+        list.setItems(Utils.getShoppingListRepository().getShoppingListItems(list));
         if(null != list) {
             TextView text = (TextView) v.findViewById(R.id.itemtext);
+            TextView summary = (TextView) v.findViewById(R.id.summary);
+            text.setTextColor(Color.BLACK);
             text.setText(list.getName());
+            summary.setTextColor(Color.BLACK);
+            summary.setText((list.isDefaultList()) ? "" : list.getItems().size() + " items remaining");
         }
         return v;
     }
