@@ -192,11 +192,16 @@ public class ShoppingListRepository {
         Cursor c = dBHelper.getReadableDatabase().rawQuery(sql, null);
 
         c.moveToFirst();
+        ArrayList<Item> itemsWhereAvgNumInLineIsZero = new ArrayList<Item>();
         while (!c.isAfterLast()) {
-            itemList.add(Utils.createItemFromValues(c.getLong(0), c.getString(1), c.getString(2), c.getInt(3), c.getInt(4), c.getLong(5),
+            if(c.getInt(4) > 0)
+                itemList.add(Utils.createItemFromValues(c.getLong(0), c.getString(1), c.getString(2), c.getInt(3), c.getInt(4), c.getLong(5),
+                    c.getLong(6), c.getInt(7)));
+            else itemsWhereAvgNumInLineIsZero.add(Utils.createItemFromValues(c.getLong(0), c.getString(1), c.getString(2), c.getInt(3), c.getInt(4), c.getLong(5),
                     c.getLong(6), c.getInt(7)));
             c.moveToNext();
         }
+        itemList.addAll(itemsWhereAvgNumInLineIsZero); // don't want never before used items on top
         c.close();
         dBHelper.close();
         return itemList;        
