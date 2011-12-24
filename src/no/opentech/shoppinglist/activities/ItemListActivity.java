@@ -80,7 +80,7 @@ public class ItemListActivity extends ListActivity
         model.setAdapter(adapter);
         ListView lv = getListView();
         lv.setBackgroundResource(R.drawable.paper);
-        lv.setCacheColorHint(Color.parseColor("#00000000"));
+        lv.setCacheColorHint(Color.parseColor("#00000000")); // transparent, to fix scrolling bug
         registerForContextMenu(lv);
         lv.setTextFilterEnabled(true);
 
@@ -232,6 +232,7 @@ public class ItemListActivity extends ListActivity
                 for(int i=0; i<model.getItemList().size(); i++) {
                     if(item.getId() == model.getItem(i).getId()) {
                         model.getItem(i).setAmount(selectedNumber);
+                        model.getItem(i).setChecked(true); // assume user wants the item checked when selecting amount
                         update();
                     }
                 }

@@ -29,6 +29,7 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.*;
@@ -67,6 +68,7 @@ public class ViewShoppingListsActivity extends ListActivity {
         registerForContextMenu(lv);
         lv.setTextFilterEnabled(true);
         lv.setBackgroundResource(R.drawable.paper);
+        lv.setCacheColorHint(Color.parseColor("#00000000")); // transparent, to fix scrolling bug
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ShoppingList selectedItem = model.getShoppingList(position);

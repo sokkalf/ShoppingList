@@ -26,6 +26,7 @@ import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -80,6 +81,7 @@ public class ShoppingListActivity extends ListActivity {
         model.setAdapter(adapter);
         ListView lv = getListView();
         lv.setBackgroundResource(R.drawable.paper);
+        lv.setCacheColorHint(Color.parseColor("#00000000")); // transparent, to fix scrolling bug
         registerForContextMenu(lv);
         lv.setTextFilterEnabled(true);
 
