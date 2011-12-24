@@ -111,6 +111,7 @@ public class ShoppingListActivity extends ListActivity {
             log.debug("Shoppinglist '" + model.getName() + "' finished, removing.");
             setResult(Activity.RESULT_OK, resultIntent);
         } else {
+            model.save();
             log.debug("Shoppinglist '" + model.getName() + " cancelled.");
             setResult(Activity.RESULT_CANCELED, resultIntent);
         }

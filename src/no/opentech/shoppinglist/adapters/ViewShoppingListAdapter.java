@@ -57,14 +57,15 @@ public class ViewShoppingListAdapter extends ArrayAdapter<ShoppingList> {
             v = vi.inflate(R.layout.shoppinglists_row, null);
         }
         ShoppingList list = lists.get(position);
-        list.setItems(Utils.getShoppingListRepository().getShoppingListItems(list));
         if(null != list) {
+            list.setItems(Utils.getShoppingListRepository().getShoppingListItems(list));
             TextView text = (TextView) v.findViewById(R.id.itemtext);
             TextView summary = (TextView) v.findViewById(R.id.summary);
             text.setTextColor(Color.BLACK);
             text.setText(list.getName());
-            summary.setTextColor(Color.BLACK);
-            summary.setText((list.isDefaultList()) ? "" : list.getItems().size() + " items remaining");
+            summary.setTextColor(Color.DKGRAY);
+            summary.setText((list.isDefaultList()) ? "Create a new shopping list" : list.getItems().size() +
+                    ((list.getItems().size() == 1) ? " item" : " items") + " remaining");
         }
         return v;
     }

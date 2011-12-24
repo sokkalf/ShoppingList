@@ -79,13 +79,30 @@ public class ShoppingListModel {
         Utils.getShoppingListRepository().removeItemFromShoppingList(item, shoppingList);
     }
 
-    public void updateNumbersAndDeleteList() {
+    public void deleteList() {
+        Utils.getShoppingListRepository().delete(shoppingList);
+    }
+
+    public void updateNumbers() {
         for(Item item : getShoppingListItems()) {
             if(item.getUsageCounter() < 1) item.setAvgNumberInLine(item.getAvgNumberInLine() + item.getNumberInLine() / 2);
             else item.setAvgNumberInLine(item.getNumberInLine());
             Utils.getItemRepository().update(item);
         }
-        Utils.getShoppingListRepository().delete(shoppingList);
+    }
+
+    public void updateNumbersAndDeleteList() {
+        updateNumbers();
+        deleteList();
+    }
+    
+    public void save() {
+        ArrayList<Item> itemsToRemove = new ArrayList<Item>();
+        for(Item i : getShoppingListItems()) {
+            if(i.isChecked()) itemsToRemove.add(i);
+        }
+        
+        for(Item i : itemsToRemove) removeItem(i);
     }
 
     public void hideCheckedItems() {

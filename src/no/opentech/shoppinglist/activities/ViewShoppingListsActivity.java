@@ -95,12 +95,16 @@ public class ViewShoppingListsActivity extends ListActivity {
                     long id = data.getLongExtra("shoppingListId", 0);
                     model.deleteShoppingListById(id);
                     update();
+                } else {
+                    update();
                 }
                 break;
             case SHOPPINGLISTACTIVITY:
                 if(resultCode == Activity.RESULT_OK) {
                     Toast.makeText(context, "Finished, removing list", Toast.LENGTH_SHORT).show();
                     model.refresh();
+                    update();
+                } else {
                     update();
                 }
                 break;
