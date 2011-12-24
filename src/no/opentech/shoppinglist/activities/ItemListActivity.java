@@ -29,6 +29,7 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.InputType;
@@ -78,6 +79,8 @@ public class ItemListActivity extends ListActivity
         setListAdapter(adapter);
         model.setAdapter(adapter);
         ListView lv = getListView();
+        lv.setBackgroundResource(R.drawable.paper);
+        lv.setCacheColorHint(Color.parseColor("#00000000"));
         registerForContextMenu(lv);
         lv.setTextFilterEnabled(true);
 

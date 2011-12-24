@@ -79,6 +79,7 @@ public class ShoppingListActivity extends ListActivity {
         setListAdapter(adapter);
         model.setAdapter(adapter);
         ListView lv = getListView();
+        lv.setBackgroundResource(R.drawable.paper);
         registerForContextMenu(lv);
         lv.setTextFilterEnabled(true);
 

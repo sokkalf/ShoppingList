@@ -60,10 +60,13 @@ public class ShoppingListAdapter extends ArrayAdapter<Item> {
         if(null != item) {
             TextView text = (TextView) v.findViewById(R.id.itemtext);
             text.setText((item.getAmount() > 1) ? item.getAmount() + " " + item.getName() : item.getName());
-            text.setTextColor(Color.LTGRAY);
-            if(item.isChecked())
+            if(item.isChecked()) {
+                text.setTextColor(Color.DKGRAY);
                 text.setPaintFlags(text.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            else text.setPaintFlags(text.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
+            } else {
+                text.setTextColor(Color.BLACK);
+                text.setPaintFlags(text.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
+            }
         }
         return v;
     }
