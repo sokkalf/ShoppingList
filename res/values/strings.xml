@@ -16,4 +16,5 @@
     <string name="dialog_picker_title">Choose a number</string>
     <string name="menu_exportitems">Export..</string>
     <string name="menu_importitems">Import..</string>
+    <string name="menu_additem">Add more items...</string>
 </resources>

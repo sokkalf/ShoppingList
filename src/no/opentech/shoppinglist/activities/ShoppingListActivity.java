@@ -31,20 +31,15 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.view.ContextMenu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import no.opentech.shoppinglist.R;
 import no.opentech.shoppinglist.ShoppingListApp;
 import no.opentech.shoppinglist.adapters.ShoppingListAdapter;
 import no.opentech.shoppinglist.entities.Item;
-import no.opentech.shoppinglist.entities.ShoppingList;
 import no.opentech.shoppinglist.models.ShoppingListModel;
 import no.opentech.shoppinglist.utils.Logger;
-import no.opentech.shoppinglist.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -63,7 +58,7 @@ public class ShoppingListActivity extends ListActivity {
     private ShoppingListModel model;
     private ArrayList<Item> visibleItems;
     private static Logger log = Logger.getLogger(ShoppingListActivity.class);
-
+    private static final int ITEMLISTACTIVITY = 98;
     private int numInLine;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -148,6 +143,46 @@ public class ShoppingListActivity extends ListActivity {
                 break;
         }
         return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inf = getMenuInflater();
+        inf.inflate(R.menu.shoppinglist_options, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.additem:
+                addItems();
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case ITEMLISTACTIVITY:
+                if (resultCode == Activity.RESULT_OK) {
+                    log.debug("Returned from ItemListActivity");
+                    model.refresh();
+                    visibleItems.clear();
+                    visibleItems.addAll(model.getShoppingListItems());
+                    update();
+                }
+                break;
+        }
+    }
+
+    public void addItems() {
+        Intent intent = new Intent(this, ItemListActivity.class);
+        intent.putExtra("shoppingListId", model.getId());
+        this.startActivityForResult(intent, ITEMLISTACTIVITY);
+        update();
     }
 
     private final SensorEventListener mSensorListener = new SensorEventListener() {

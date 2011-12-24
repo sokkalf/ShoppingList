@@ -41,10 +41,8 @@ import no.opentech.shoppinglist.ShoppingListApp;
 import no.opentech.shoppinglist.adapters.ViewShoppingListAdapter;
 import no.opentech.shoppinglist.entities.ShoppingList;
 import no.opentech.shoppinglist.models.ViewShoppingListsModel;
-import no.opentech.shoppinglist.utils.Utils;
 
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -68,7 +66,7 @@ public class ViewShoppingListsActivity extends ListActivity {
         ListView lv = getListView();
         registerForContextMenu(lv);
         lv.setTextFilterEnabled(true);
-
+        lv.setBackgroundResource(R.drawable.paper);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ShoppingList selectedItem = model.getShoppingList(position);

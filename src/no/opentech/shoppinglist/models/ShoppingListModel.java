@@ -42,6 +42,11 @@ public class ShoppingListModel {
         shoppingList = Utils.getShoppingListRepository().getShoppingListById(id);
     }
     
+    public void refresh() {
+        shoppingList.getItems().clear();
+        shoppingList.setItems(Utils.getShoppingListRepository().getShoppingListItems(shoppingList));
+    }
+
     public void setAdapter(ShoppingListAdapter adapter) {
         this.adapter = adapter;
     }
@@ -57,6 +62,10 @@ public class ShoppingListModel {
         if(null != adapter) adapter.notifyDataSetChanged();
     }
     
+    public long getId() {
+        return shoppingList.getId();
+    }
+
     public String getName() {
         return shoppingList.getName();
     }
