@@ -1,8 +1,5 @@
 Shopping lists:
-refactor more to model classes
 implement "Show details" on shopping list
-add new items to an existing shopping list
-add options menu to ShoppingListActivity
 
 Export/import:
 Menu items are too easy to hit by accident, move export/import to their own activities?
