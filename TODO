@@ -8,3 +8,4 @@ Other:
 add some statistics
 user settings
 replace hardcoded strings with values in strings.xml
+handle database upgrades

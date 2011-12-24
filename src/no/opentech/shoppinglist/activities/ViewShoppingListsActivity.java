@@ -117,7 +117,9 @@ public class ViewShoppingListsActivity extends ListActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inf = getMenuInflater();
-        inf.inflate(R.menu.shoppinglists_options, menu);
+        if(ShoppingListApp.isRelease())
+            inf.inflate(R.menu.shoppinglists_options, menu);
+        else inf.inflate(R.menu.shoppinglists_options_development, menu);
         return true;
     }
 

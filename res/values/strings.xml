@@ -9,7 +9,9 @@
     <string name="context_menu_title">Select action</string>
     <string name="menu_newlist">New shopping list</string>
     <string name="menu_manageitems">Manage items</string>
-    <string name="menu_deleteselected">Delete selected items</string>    <string name="menu_preferences_label">Preferences</string>
+    <string name="menu_development">Development options</string>
+    <string name="menu_deleteselected">Delete selected items</string>
+    <string name="menu_preferences_label">Preferences</string>
     <string name="menu_dialog_label">Dialog Picker</string>
     <string name="dialog_set_number">Set</string>
     <string name="dialog_cancel">Cancel</string>
