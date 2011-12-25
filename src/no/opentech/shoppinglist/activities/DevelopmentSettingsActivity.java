@@ -22,11 +22,14 @@
 
 package no.opentech.shoppinglist.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.widget.Toast;
 import no.opentech.shoppinglist.R;
+import no.opentech.shoppinglist.ShoppingListApp;
 import no.opentech.shoppinglist.models.DevelopmentSettingsModel;
 
 /**
@@ -36,6 +39,7 @@ import no.opentech.shoppinglist.models.DevelopmentSettingsModel;
  */
 public class DevelopmentSettingsActivity extends PreferenceActivity {
     DevelopmentSettingsModel model;
+    Context context = ShoppingListApp.getContext();
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +49,7 @@ public class DevelopmentSettingsActivity extends PreferenceActivity {
         resetCounters.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
                 model.resetCounters();
+                Toast.makeText(context, "Item counters reset", Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
