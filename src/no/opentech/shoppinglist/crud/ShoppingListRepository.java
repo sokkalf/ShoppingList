@@ -194,14 +194,14 @@ public class ShoppingListRepository {
         c.moveToFirst();
         ArrayList<Item> itemsWhereAvgNumInLineIsZero = new ArrayList<Item>();
         while (!c.isAfterLast()) {
-            if(c.getInt(4) > 0)
+            if(c.getInt(4) > 0) // if avgNumberInLine is more than 0, add it to the list straight away, else add it to a temporary list
                 itemList.add(Utils.createItemFromValues(c.getLong(0), c.getString(1), c.getString(2), c.getInt(3), c.getInt(4), c.getLong(5),
                     c.getLong(6), c.getInt(7)));
             else itemsWhereAvgNumInLineIsZero.add(Utils.createItemFromValues(c.getLong(0), c.getString(1), c.getString(2), c.getInt(3), c.getInt(4), c.getLong(5),
                     c.getLong(6), c.getInt(7)));
             c.moveToNext();
         }
-        itemList.addAll(itemsWhereAvgNumInLineIsZero); // don't want never before used items on top
+        itemList.addAll(itemsWhereAvgNumInLineIsZero); // add items in temporary list to "bottom" of itemList, don't want never before used items on top
         c.close();
         dBHelper.close();
         return itemList;        
