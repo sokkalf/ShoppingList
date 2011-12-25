@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="no.opentech.shoppinglist"
-      android:versionCode="6"
-      android:versionName="0.3.5"
+      android:versionCode="7"
+      android:versionName="0.3.7"
       android:debuggable="true">
     <uses-sdk android:minSdkVersion="7" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -16,5 +16,6 @@
         <activity android:name=".activities.ItemDetailsActivity" android:label="@string/itemdetails_name"/>
         <activity android:name=".activities.ItemListActivity" android:label="@string/itemlist_name" android:screenOrientation="portrait"/>
         <activity android:name=".activities.ShoppingListActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activities.DevelopmentSettingsActivity"/>
     </application>
 </manifest>

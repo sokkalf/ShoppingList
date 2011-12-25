@@ -36,6 +36,8 @@ import java.io.PrintWriter;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -60,6 +62,15 @@ public class Utils {
         return new Date().getTime();
     }
     
+    public static String formatDate(Date date) {
+        Format formatter = new SimpleDateFormat(ShoppingListApp.dateFormat);
+        return formatter.format(date);
+    }
+    
+    public static String formatDateShort(Date date) {
+        return formatDate(date).split(" ")[0];
+    }
+
     public static Item createItemFromValues(long id, String name, String desc, int usages,
                                      int avgnum, long firstseen, long lastseen) {
         Item i = new Item();

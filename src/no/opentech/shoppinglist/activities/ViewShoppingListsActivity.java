@@ -20,7 +20,6 @@
  *
  */
 
-
 package no.opentech.shoppinglist.activities;
 
 import android.app.Activity;
@@ -42,10 +41,9 @@ import no.opentech.shoppinglist.ShoppingListApp;
 import no.opentech.shoppinglist.adapters.ViewShoppingListAdapter;
 import no.opentech.shoppinglist.entities.ShoppingList;
 import no.opentech.shoppinglist.models.ViewShoppingListsModel;
+import no.opentech.shoppinglist.utils.Utils;
 
-import java.text.DateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 /**
  * Created by: Christian Lønaas
@@ -132,6 +130,9 @@ public class ViewShoppingListsActivity extends ListActivity {
             case R.id.manageitems:
                 manageItems();
                 break;
+            case R.id.developmentoptions:
+                startActivity(new Intent(this, DevelopmentSettingsActivity.class));
+                break;
         }
         return true;
     }
@@ -188,8 +189,7 @@ public class ViewShoppingListsActivity extends ListActivity {
         input.setWidth(200); // TODO: hard coded width is bad
         input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         alert.setTitle("Type a name");
-        DateFormat f = DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
-        String text = "My List " + f.format(new Date());
+        String text = "My List " + Utils.formatDateShort(new Date());
         input.setText(text);
         input.setSelection(0, text.length());
         alert.setView(input);

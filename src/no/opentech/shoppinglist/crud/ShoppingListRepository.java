@@ -201,7 +201,7 @@ public class ShoppingListRepository {
                     c.getLong(6), c.getInt(7)));
             c.moveToNext();
         }
-        itemList.addAll(itemsWhereAvgNumInLineIsZero); // add items in temporary list to "bottom" of itemList, don't want never before used items on top
+        itemList.addAll(itemsWhereAvgNumInLineIsZero); // add items in temporary list to "bottom" of itemList, we don't want never before used items on top
         c.close();
         dBHelper.close();
         return itemList;        

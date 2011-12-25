@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Development options"
+                        android:summary="Tweak the nuts and bolts">
+
+        <ListPreference android:key="dateFormat" android:title="Date format"
+                        android:summary="Select a date format" android:entries="@array/dateFormatSettings"
+                        android:entryValues="@array/dateFormatSettingsValues"
+                        android:dialogTitle="Select date format"/>
+
+        <Preference android:key="resetCounters" android:title="Reset counters"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>

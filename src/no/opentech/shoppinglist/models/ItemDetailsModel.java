@@ -25,9 +25,6 @@ package no.opentech.shoppinglist.models;
 import no.opentech.shoppinglist.entities.Item;
 import no.opentech.shoppinglist.utils.Utils;
 
-import java.text.Format;
-import java.text.SimpleDateFormat;
-
 /**
  * Created by: Christian Lønaas
  * Date: 21.12.11
@@ -57,12 +54,10 @@ public class ItemDetailsModel {
     }
     
     public String getCreatedAsString() {
-        Format formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        return formatter.format(item.getFirstSeen());
+        return Utils.formatDate(item.getFirstSeen());
     }
     
     public String getUpdatedAsString() {
-        Format formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        return formatter.format(item.getLastSeen());
+        return Utils.formatDate(item.getLastSeen());
     }
 }

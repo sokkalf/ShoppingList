@@ -14,7 +14,7 @@ public class Logger {
     public static Logger logger;
     
     public Logger(String name) {
-        TAG = ShoppingListApp.appName + "/" + name;
+        TAG = ShoppingListApp.APP_NAME + "/" + name;
     }
 
     public static Logger getLogger(Class c) {

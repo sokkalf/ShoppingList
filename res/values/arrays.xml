@@ -1,0 +1,13 @@
+<resources>
+    <string-array name="dateFormatSettings">
+        <item>25.12.2011 13:15</item>
+        <item>2011-12-25 13:15</item>
+        <item>12/25/2011 1:15 PM</item>
+    </string-array>
+
+    <string-array name="dateFormatSettingsValues">
+        <item>dd.MM.yyyy HH:mm</item>
+        <item>yyyy-MM-dd HH:mm</item>
+        <item>MM/dd/yyyy h:mm a</item>
+    </string-array>
+</resources>

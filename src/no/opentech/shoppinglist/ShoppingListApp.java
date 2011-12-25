@@ -25,6 +25,8 @@ package no.opentech.shoppinglist;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
+import no.opentech.shoppinglist.utils.Logger;
 
 /**
  * Created by: Christian Lønaas
@@ -32,10 +34,21 @@ import android.content.Context;
  * Time: 23:12
  */
 public class ShoppingListApp extends Application {
-    public static String appName = "ShoppingList";
-    private static boolean DEVELOPMENT_VERSION = true;
+    public static final String APP_NAME = "ShoppingList";
+    public static final String PREFS_NAME = "ShoppingListSettings";
+    private static final boolean DEVELOPMENT_VERSION = true;
     private static ShoppingListApp instance;
+    private static Logger log = Logger.getLogger(ShoppingListApp.class);
+    public static String dateFormat;
 
+    @Override
+    public void onCreate() {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        setDateFormat(settings.getString("dateFormat", "dd.MM.yyyy HH:mm"));
+        log.debug("Loading shared preferences");
+        super.onCreate();
+    }
+    
     public ShoppingListApp() {
         instance = this;
     }
@@ -46,5 +59,9 @@ public class ShoppingListApp extends Application {
 
     public static boolean isRelease() {
         return !DEVELOPMENT_VERSION;
+    }
+    
+    public static void setDateFormat(String df) {
+        dateFormat = df;
     }
 }
