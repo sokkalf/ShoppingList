@@ -226,6 +226,7 @@ public class ViewShoppingListsActivity extends ListActivity {
     
     public void deleteShoppingList(ShoppingList sl) {
         model.deleteShoppingList(sl);
+        Toast.makeText(context, "Shopping list deleted", Toast.LENGTH_SHORT).show();
         update();
     }
 }

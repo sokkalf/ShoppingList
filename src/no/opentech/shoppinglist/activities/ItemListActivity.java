@@ -204,7 +204,7 @@ public class ItemListActivity extends ListActivity
         input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         input.setHint("Enter name for the item");
         alert.setTitle("Item name");
-		alert.setView(input);
+        alert.setView(input);
 		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
 				String newItem = input.getText().toString().trim();

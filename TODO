@@ -1,6 +1,3 @@
-Shopping lists:
-implement "Show details" on shopping list
-
 Export/import:
 Menu items are too easy to hit by accident, move export/import to their own activities?
 
@@ -8,3 +5,8 @@ Other:
 add some statistics
 replace hardcoded strings with values in strings.xml
 handle database upgrades
+
+Preferences:
+make preferences general for all users
+confirmation dialog for reset counters
+add sensitivity for shake-to-clear

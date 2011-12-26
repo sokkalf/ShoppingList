@@ -19,9 +19,7 @@ package no.opentech.shoppinglist.external;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Handler;
-import android.text.InputFilter;
-import android.text.InputType;
-import android.text.Spanned;
+import android.text.*;
 import android.text.method.NumberKeyListener;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -134,6 +132,19 @@ public class NumberPicker extends LinearLayout implements OnClickListener,
         mDecrementButton.setNumberPicker(this);
 
         mText = (EditText) findViewById(R.id.timepicker_input);
+        mText.addTextChangedListener(new TextWatcher() { // added 26.12.11 by Christian Lønaas
+            // fixes bug where one couldn't type in a number, but had to use the up/down buttons
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(charSequence.length() > 0)
+                    mCurrent = Integer.parseInt(charSequence.toString());
+            }
+
+            public void afterTextChanged(Editable editable) {
+            }
+        });
         mText.setOnFocusChangeListener(this);
         mText.setFilters(new InputFilter[] {inputFilter});
         mText.setRawInputType(InputType.TYPE_CLASS_NUMBER);
