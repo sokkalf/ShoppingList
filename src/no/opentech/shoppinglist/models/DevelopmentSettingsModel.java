@@ -40,6 +40,12 @@ public class DevelopmentSettingsModel {
     Context context = ShoppingListApp.getContext();
     Logger log = Logger.getLogger(DevelopmentSettingsModel.class);
     private String dateFormat;
+    private String shakeSensitivity;
+    
+    public DevelopmentSettingsModel() {
+        dateFormat = ShoppingListApp.dateFormat;
+        shakeSensitivity = Integer.toString(ShoppingListApp.shakeSensitivity);
+    }
     
     public void setDateFormat(String dateFormat) {
         this.dateFormat = dateFormat;
@@ -50,8 +56,17 @@ public class DevelopmentSettingsModel {
     public String getDateFormat() {
         return dateFormat;
     }
-            
     
+    public void setShakeSensitivity(String sensitivity) {
+        this.shakeSensitivity = sensitivity;
+        ShoppingListApp.setShakeSensitivity(Integer.parseInt(sensitivity));
+        saveSettings();
+    }
+    
+    public String getShakeSensitivity() {
+        return shakeSensitivity;
+    }
+
     public void resetCounters() {
         ArrayList<Item> items = Utils.getItemRepository().getItems();
         for(Item item : items) {

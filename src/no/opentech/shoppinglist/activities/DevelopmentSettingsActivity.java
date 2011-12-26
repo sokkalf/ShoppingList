@@ -62,5 +62,14 @@ public class DevelopmentSettingsActivity extends PreferenceActivity {
                 return true;
             }
         });
+
+        Preference shakeSensitivity = findPreference("shakeSensitivity");
+        shakeSensitivity.setDefaultValue(model.getShakeSensitivity());
+        shakeSensitivity.setOnPreferenceChangeListener(new ListPreference.OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference preference, Object value) {
+                model.setShakeSensitivity(value.toString());
+                return true;
+            }
+        });
     }
 }

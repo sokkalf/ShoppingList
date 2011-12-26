@@ -40,11 +40,13 @@ public class ShoppingListApp extends Application {
     private static ShoppingListApp instance;
     private static Logger log = Logger.getLogger(ShoppingListApp.class);
     public static String dateFormat;
+    public static int shakeSensitivity;
 
     @Override
     public void onCreate() {
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         setDateFormat(settings.getString("dateFormat", "dd.MM.yyyy HH:mm"));
+        setShakeSensitivity(Integer.parseInt(settings.getString("shakeSensitivity", "5")));
         log.debug("Loading shared preferences");
         super.onCreate();
     }
@@ -63,5 +65,9 @@ public class ShoppingListApp extends Application {
     
     public static void setDateFormat(String df) {
         dateFormat = df;
+    }
+
+    public static void setShakeSensitivity(int sensitivity) {
+        shakeSensitivity = sensitivity;
     }
 }

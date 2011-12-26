@@ -6,6 +6,9 @@
                         android:summary="Select a date format" android:entries="@array/dateFormatSettings"
                         android:entryValues="@array/dateFormatSettingsValues"
                         android:dialogTitle="Select date format"/>
+        <ListPreference android:key="shakeSensitivity" android:title="Shake sensitivity"
+                        android:summary="Sensitivity for shake-to-clear" android:entries="@array/shakeSensitivitySettings"
+                        android:entryValues="@array/shakeSensitivity" android:dialogTitle="Select sensitivity"/>
         <Preference android:key="resetCounters" android:title="Reset counters"
                     android:summary="Reset item usage counters"/>
     </PreferenceCategory>

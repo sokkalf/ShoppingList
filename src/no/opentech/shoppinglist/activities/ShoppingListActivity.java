@@ -202,7 +202,8 @@ public class ShoppingListActivity extends ListActivity {
             float delta = mAccelCurrent - mAccelLast;
             mAccel = mAccel * 0.9f + delta; // perform low-cut filter
             
-            if(mAccel > 5) {
+            if(mAccel > ShoppingListApp.shakeSensitivity) {
+                log.debug("shake detected, sensitivity is " + ShoppingListApp.shakeSensitivity + ", current value is " + mAccel);
                 if(model.allItemsChecked()) {
                     Intent resultIntent = new Intent();
                     model.updateNumbersAndDeleteList();
