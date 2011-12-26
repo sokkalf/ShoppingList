@@ -24,9 +24,6 @@ CREATE TABLE list (
 );
 
 INSERT INTO item (name, description, usages, avgNumberInLine, firstseen, lastseen)
-  VALUES ('Default', 'Replace me', 0, 0, 0, 0);
-
-INSERT INTO item (name, description, usages, avgNumberInLine, firstseen, lastseen)
   VALUES ('Bananer', 'Den nest beste frukten', 0, 0, 0, 0);
 
 INSERT INTO item (name, description, usages, avgNumberInLine, firstseen, lastseen)

@@ -221,4 +221,19 @@ public class Item implements Serializable, Parcelable {
 
     };
 
+    @Override
+    public int hashCode() {
+        int hash = 1;
+        hash *= 17 * id;
+        hash *= 31 * name.hashCode();
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object item) {
+        if(null == item) return false;
+        if(this == item) return true;
+
+        return ((((Item)item).getName().equals(name)) && (((Item)item).getId() == id));
+    }
 }

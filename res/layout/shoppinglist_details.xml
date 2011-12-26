@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+        >
+    <LinearLayout
+            android:id="@+id/shoppinglist_details_name"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:orientation="vertical">
+        <TextView
+                android:text="Name"
+                android:textSize="16sp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content" />
+        <TextView
+                android:id="@+id/shoppinglistname"
+                android:textSize="24sp"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent" />
+    </LinearLayout>
+    <LinearLayout
+            android:id="@+id/shoppinglist_details_created"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:orientation="vertical">
+        <TextView
+                android:text="Created"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        <TextView
+                android:id="@+id/shoppinglistcreateddate"
+                android:textSize="24sp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+            android:id="@+id/shoppinglist_details_numitems"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:orientation="vertical">
+        <TextView
+                android:text="Items remaining"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        <TextView
+                android:id="@+id/shoppinglistnumitems"
+                android:textSize="24sp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+    </LinearLayout>
+</LinearLayout>

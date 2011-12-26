@@ -71,8 +71,8 @@ public class ItemListActivity extends ListActivity
         super.onCreate(savedInstanceState);
 
         log = Logger.getLogger(ItemListActivity.class);
-        model = new ItemListModel();
         shoppingListId = getIntent().getLongExtra("shoppingListId", 0);
+        model = new ItemListModel(shoppingListId);
         noList = getIntent().getBooleanExtra("noList", false);
         setTitle((!noList) ? "Select items" : "Manage items");
         adapter = new ItemAdapter(context, R.layout.list_item, model);
@@ -81,6 +81,8 @@ public class ItemListActivity extends ListActivity
         ListView lv = getListView();
         lv.setBackgroundResource(R.drawable.paper);
         lv.setCacheColorHint(Color.parseColor("#00000000")); // transparent, to fix scrolling bug
+        lv.setDivider(null);
+        lv.setDividerHeight(0);
         registerForContextMenu(lv);
         lv.setTextFilterEnabled(true);
 

@@ -82,6 +82,8 @@ public class ShoppingListActivity extends ListActivity {
         ListView lv = getListView();
         lv.setBackgroundResource(R.drawable.paper);
         lv.setCacheColorHint(Color.parseColor("#00000000")); // transparent, to fix scrolling bug
+        lv.setDivider(null);
+        lv.setDividerHeight(0);
         registerForContextMenu(lv);
         lv.setTextFilterEnabled(true);
 

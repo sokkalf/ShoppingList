@@ -127,6 +127,10 @@ public class ItemRepository {
         return getItems("usages DESC");
     }
 
+    public ArrayList<Item> getItemsOrderedByName() {
+        return getItems("name");
+    }
+
     public ArrayList<Item> getItems(String orderBy) {
         ArrayList<Item> itemList = new ArrayList<Item>();
         Cursor c = dBHelper.getReadableDatabase().query("item", new String[] {"id", "name", "description", "usages", "avgNumberInLine",

@@ -67,6 +67,8 @@ public class ViewShoppingListsActivity extends ListActivity {
         lv.setTextFilterEnabled(true);
         lv.setBackgroundResource(R.drawable.paper);
         lv.setCacheColorHint(Color.parseColor("#00000000")); // transparent, to fix scrolling bug
+        lv.setDivider(null);
+        lv.setDividerHeight(0);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ShoppingList selectedItem = model.getShoppingList(position);
@@ -153,7 +155,13 @@ public class ViewShoppingListsActivity extends ListActivity {
         
         switch(item.getItemId()) {
             case R.id.viewshoppinglistdetails:
-                Toast.makeText(context, "Not implemented yet..", Toast.LENGTH_SHORT).show();
+                if(!selectedItem.isDefaultList()) {
+                    Intent intent = new Intent(this, ShoppingListDetailsActivity.class);
+                    intent.putExtra("shoppingListId", selectedItem.getId());
+                    this.startActivity(intent);
+                } else {
+                    Toast.makeText(context, "No details available", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.deleteshoppinglist:
                 if(selectedItem.isDefaultList())

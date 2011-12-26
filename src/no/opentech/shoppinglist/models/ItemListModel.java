@@ -42,8 +42,25 @@ public class ItemListModel {
     private static Logger log = Logger.getLogger(ItemListModel.class);
     private boolean multiDelete = false;
     
-    public ItemListModel() {
-        itemList = Utils.getItemRepository().getItemsOrderedByUsages();
+    public ItemListModel(long shoppingListId) {
+        if(shoppingListId == 0)
+            itemList = Utils.getItemRepository().getItemsOrderedByName();
+        else {
+            ArrayList<Item> selectedItems = new ArrayList<Item>();
+            ArrayList<Item> shoppingListItems = Utils.getShoppingListRepository().getShoppingListById(shoppingListId).getItems();
+            itemList = Utils.getItemRepository().getItemsOrderedByUsages();
+            for(Item i : shoppingListItems) {
+                if(itemList.contains(i)) {
+                    selectedItems.add(i);
+                }
+            }
+            
+            for(Item i : selectedItems) {
+                Item updatedItem = itemList.get(itemList.indexOf(i));
+                updatedItem.setChecked(true);
+                updatedItem.setAmount(i.getAmount());
+            }
+        }
     }
 
     public void setAdapter(ItemAdapter adapter) {
@@ -129,7 +146,7 @@ public class ItemListModel {
         for(Item item : getCheckedItems()) {
             item.incrementUsageCounter();
             Utils.getItemRepository().update(item);
-            Utils.getShoppingListRepository().addItemToShoppingList(item, sl);
+            if(!sl.getItems().contains(item)) Utils.getShoppingListRepository().addItemToShoppingList(item, sl);
         }
     }
 
