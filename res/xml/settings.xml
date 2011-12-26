@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="Development options"
+    <PreferenceCategory android:title="General options"
                         android:summary="Tweak the nuts and bolts">
         <ListPreference android:key="dateFormat" android:title="Date format"
                         android:summary="Select a date format" android:entries="@array/dateFormatSettings"
@@ -9,6 +9,8 @@
         <ListPreference android:key="shakeSensitivity" android:title="Shake sensitivity"
                         android:summary="Sensitivity for shake-to-clear" android:entries="@array/shakeSensitivitySettings"
                         android:entryValues="@array/shakeSensitivity" android:dialogTitle="Select sensitivity"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Item options" android:summary="Various settings for items">
         <Preference android:key="resetCounters" android:title="Reset counters"
                     android:summary="Reset item usage counters"/>
     </PreferenceCategory>

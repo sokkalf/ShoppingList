@@ -5,6 +5,3 @@ Other:
 add some statistics
 replace hardcoded strings with values in strings.xml
 handle database upgrades
-
-Preferences:
-make preferences general for all users

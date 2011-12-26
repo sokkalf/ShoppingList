@@ -32,25 +32,25 @@ import android.preference.PreferenceActivity;
 import android.widget.Toast;
 import no.opentech.shoppinglist.R;
 import no.opentech.shoppinglist.ShoppingListApp;
-import no.opentech.shoppinglist.models.DevelopmentSettingsModel;
+import no.opentech.shoppinglist.models.SettingsModel;
 
 /**
  * Created by: Christian Lønaas
  * Date: 25.12.11
  * Time: 18:05
  */
-public class DevelopmentSettingsActivity extends PreferenceActivity {
-    DevelopmentSettingsModel model;
+public class SettingsActivity extends PreferenceActivity {
+    SettingsModel model;
     Context context = ShoppingListApp.getContext();
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        model = new DevelopmentSettingsModel();
-        addPreferencesFromResource(R.xml.developmentsettings);
+        model = new SettingsModel();
+        addPreferencesFromResource(R.xml.settings);
         Preference resetCounters = findPreference("resetCounters");
         resetCounters.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(DevelopmentSettingsActivity.this);
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(SettingsActivity.this);
                 alertDialog.setTitle("Reset counters?");
                 alertDialog.setMessage("This will reset all item counters, are you sure?");
                 alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {

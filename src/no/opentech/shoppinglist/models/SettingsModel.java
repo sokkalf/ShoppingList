@@ -36,13 +36,13 @@ import java.util.ArrayList;
  * Date: 25.12.11
  * Time: 19:14
  */
-public class DevelopmentSettingsModel {
+public class SettingsModel {
     Context context = ShoppingListApp.getContext();
-    Logger log = Logger.getLogger(DevelopmentSettingsModel.class);
+    Logger log = Logger.getLogger(SettingsModel.class);
     private String dateFormat;
     private String shakeSensitivity;
     
-    public DevelopmentSettingsModel() {
+    public SettingsModel() {
         dateFormat = ShoppingListApp.dateFormat;
         shakeSensitivity = Integer.toString(ShoppingListApp.shakeSensitivity);
     }
