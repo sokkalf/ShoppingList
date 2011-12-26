@@ -13,5 +13,9 @@
     <PreferenceCategory android:title="Item options" android:summary="Various settings for items">
         <Preference android:key="resetCounters" android:title="Reset counters"
                     android:summary="Reset item usage counters"/>
+        <Preference android:key="exportItems" android:title="Export"
+                    android:summary="Export items to SD-card"/>
+        <Preference android:key="importItems" android:title="Import"
+                    android:summary="Import items from SD-card"/>
     </PreferenceCategory>
 </PreferenceScreen>

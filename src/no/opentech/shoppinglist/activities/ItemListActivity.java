@@ -143,12 +143,6 @@ public class ItemListActivity extends ListActivity
             case R.id.deleteselected:
                 deleteSelected();
                 break;
-            case R.id.exportitems:
-                exportItems();
-                break;
-            case R.id.importitems:
-                importItems();
-                break;
         }
         return true;
     }

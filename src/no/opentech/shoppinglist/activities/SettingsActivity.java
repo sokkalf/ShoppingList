@@ -86,5 +86,25 @@ public class SettingsActivity extends PreferenceActivity {
                 return true;
             }
         });
+
+        Preference exportItems = findPreference("exportItems");
+        exportItems.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            public boolean onPreferenceClick(Preference preference) {
+                if(model.exportItems())
+                    Toast.makeText(context, "Items exported", Toast.LENGTH_SHORT).show();
+                else Toast.makeText(context, "Item export failed", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+
+        Preference importItems = findPreference("importItems");
+        importItems.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            public boolean onPreferenceClick(Preference preference) {
+                if(model.importItems())
+                    Toast.makeText(context, "Items imported", Toast.LENGTH_SHORT).show();
+                else Toast.makeText(context, "Item import failed", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
     }
 }

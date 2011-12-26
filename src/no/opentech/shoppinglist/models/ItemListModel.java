@@ -105,12 +105,14 @@ public class ItemListModel {
         if (!multiDelete) update();
     }
 
+    @Deprecated
     public boolean exportItems() {
         JSONHandler j = new JSONHandler();
         String json = j.createJSONFromItemList(itemList);
         return Utils.writeFileToSDCard(Utils.BACKUPFILE, json);
     }
-    
+
+    @Deprecated
     public boolean importItems() {
         String json = Utils.readFileFromSDCard(Utils.BACKUPFILE);
         if(null != json) {

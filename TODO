@@ -1,6 +1,3 @@
-Export/import:
-Menu items are too easy to hit by accident, move export/import to their own activities?
-
 Other:
 add some statistics
 replace hardcoded strings with values in strings.xml

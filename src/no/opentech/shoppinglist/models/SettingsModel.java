@@ -26,6 +26,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import no.opentech.shoppinglist.ShoppingListApp;
 import no.opentech.shoppinglist.entities.Item;
+import no.opentech.shoppinglist.file.JSONHandler;
 import no.opentech.shoppinglist.utils.Logger;
 import no.opentech.shoppinglist.utils.Utils;
 
@@ -77,6 +78,36 @@ public class SettingsModel {
         }
     }
 
+    public boolean exportItems() {
+        JSONHandler j = new JSONHandler();
+        String json = j.createJSONFromItemList(Utils.getItemRepository().getItemsOrderedByName());
+        return Utils.writeFileToSDCard(Utils.BACKUPFILE, json);
+    }
+
+    public boolean importItems() {
+        String json = Utils.readFileFromSDCard(Utils.BACKUPFILE);
+        if(null != json) {
+            ArrayList<Item> existingItems = Utils.getItemRepository().getItems();
+            JSONHandler j = new JSONHandler();
+            ArrayList<Item> importedItems = j.createItemListFromJSON(json);
+            for(Item i : importedItems) {
+                log.debug(i.getName() + " read from import");
+                /* contains method won't cut it, because id differs */
+                boolean itemExists = false;
+                for(Item ex : existingItems) {
+                    if(ex.getName().equals(i.getName())) {
+                        itemExists = true;
+                        break;
+                    }
+                }
+                if(!itemExists) Utils.getItemRepository().insert(i);
+                else log.debug(i.getName() + " skipped because it already exists");
+            }
+            return true;
+        }
+        return false;        
+    }
+    
     public void saveSettings() {
         SharedPreferences settings = context.getSharedPreferences(ShoppingListApp.PREFS_NAME, 0);
         SharedPreferences.Editor editor = settings.edit();
