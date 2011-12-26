@@ -22,7 +22,9 @@
 
 package no.opentech.shoppinglist.activities;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -48,8 +50,21 @@ public class DevelopmentSettingsActivity extends PreferenceActivity {
         Preference resetCounters = findPreference("resetCounters");
         resetCounters.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
-                model.resetCounters();
-                Toast.makeText(context, "Item counters reset", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(DevelopmentSettingsActivity.this);
+                alertDialog.setTitle("Reset counters?");
+                alertDialog.setMessage("This will reset all item counters, are you sure?");
+                alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        model.resetCounters();
+                        Toast.makeText(context, "Item counters reset", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+                alertDialog.show();
                 return true;
             }
         });

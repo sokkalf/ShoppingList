@@ -8,5 +8,3 @@ handle database upgrades
 
 Preferences:
 make preferences general for all users
-confirmation dialog for reset counters
-add sensitivity for shake-to-clear
