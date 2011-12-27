@@ -23,6 +23,8 @@
 package no.opentech.shoppinglist.activities;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -38,11 +40,24 @@ public class HelpActivity extends Activity {
         super.onCreate(savedInstanceState);
         WebView browser = new WebView(this);
         setContentView(browser);
-        browser.setWebViewClient(new WebViewClient());
+        browser.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if(url.startsWith("http")) { // if the url is "external", launch in real browser
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    startActivity(browserIntent);
+                } else { // if not, load it in the WebView
+                    view.loadUrl(url);
+                }
+                return true;
+            }
+        });
 
         WebSettings settings = browser.getSettings();
         settings.setJavaScriptEnabled(true);
 
         browser.loadUrl("file:///android_asset/helpindex.html");
     }
+
+
 }
