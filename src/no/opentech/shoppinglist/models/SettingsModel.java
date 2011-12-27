@@ -28,6 +28,7 @@ import no.opentech.shoppinglist.ShoppingListApp;
 import no.opentech.shoppinglist.entities.Item;
 import no.opentech.shoppinglist.file.JSONHandler;
 import no.opentech.shoppinglist.utils.Logger;
+import no.opentech.shoppinglist.utils.Statistics;
 import no.opentech.shoppinglist.utils.Utils;
 
 import java.util.ArrayList;
@@ -106,6 +107,22 @@ public class SettingsModel {
             return true;
         }
         return false;        
+    }
+    
+    public String getNumTimesStarted() {
+        return "" + Statistics.getNumTimesStarted();
+    }
+    
+    public String getShoppingListsCreated() {
+        return "" + Statistics.getShoppingListsCreated();
+    }
+    
+    public String getItemsCheckedOff() {
+        return "" + Statistics.getItemsCheckedOff();
+    }
+
+    public void resetStats() {
+        Statistics.reset();
     }
     
     public void saveSettings() {

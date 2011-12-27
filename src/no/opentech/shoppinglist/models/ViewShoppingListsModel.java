@@ -23,6 +23,7 @@
 package no.opentech.shoppinglist.models;
 
 import no.opentech.shoppinglist.entities.ShoppingList;
+import no.opentech.shoppinglist.utils.Statistics;
 import no.opentech.shoppinglist.utils.Utils;
 
 import java.util.ArrayList;
@@ -70,6 +71,7 @@ public class ViewShoppingListsModel {
         long id = Utils.getShoppingListRepository().insert(sl);
         sl.setId(id);
         shoppingLists.add(0, sl);
+        Statistics.incrementShoppingListsCreated();
         return id;
     }
 

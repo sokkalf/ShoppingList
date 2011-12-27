@@ -31,7 +31,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Environment;
 import android.text.InputType;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
@@ -46,7 +45,6 @@ import no.opentech.shoppinglist.entities.Item;
 import no.opentech.shoppinglist.external.NumberPickerDialog;
 import no.opentech.shoppinglist.models.ItemListModel;
 import no.opentech.shoppinglist.utils.Logger;
-import no.opentech.shoppinglist.utils.Utils;
 
 import java.util.ArrayList;
 

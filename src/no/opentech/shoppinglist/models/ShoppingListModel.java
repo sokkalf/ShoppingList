@@ -25,6 +25,7 @@ package no.opentech.shoppinglist.models;
 import no.opentech.shoppinglist.adapters.ShoppingListAdapter;
 import no.opentech.shoppinglist.entities.Item;
 import no.opentech.shoppinglist.entities.ShoppingList;
+import no.opentech.shoppinglist.utils.Statistics;
 import no.opentech.shoppinglist.utils.Utils;
 
 import java.util.ArrayList;
@@ -75,6 +76,7 @@ public class ShoppingListModel {
     }
     
     public void removeItem(Item item) {
+        if(item.isChecked()) Statistics.incrementItemsCheckedOff();
         getShoppingListItems().remove(item);
         Utils.getShoppingListRepository().removeItemFromShoppingList(item, shoppingList);
     }
@@ -87,6 +89,8 @@ public class ShoppingListModel {
         for(Item item : getShoppingListItems()) {
             if(item.getUsageCounter() < 1) item.setAvgNumberInLine(item.getAvgNumberInLine() + item.getNumberInLine() / 2);
             else item.setAvgNumberInLine(item.getNumberInLine());
+
+            Statistics.incrementItemsCheckedOff();
             Utils.getItemRepository().update(item);
         }
     }

@@ -106,5 +106,38 @@ public class SettingsActivity extends PreferenceActivity {
                 return true;
             }
         });
+
+        /* Statistics */
+
+        Preference resetStats = findPreference("resetStats");
+        resetStats.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            public boolean onPreferenceClick(Preference preference) {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(SettingsActivity.this);
+                alertDialog.setTitle("Reset statistics?");
+                alertDialog.setMessage("This will reset all statistics, are you sure?");
+                alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        model.resetStats();
+                        Toast.makeText(context, "Statistics reset", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+                alertDialog.show();
+                return true;
+            }
+        });
+
+        Preference itemsCheckedOffStats = findPreference("itemsChecked");
+        itemsCheckedOffStats.setSummary(model.getItemsCheckedOff());
+
+        Preference shoppingListsCreatedStats = findPreference("shoppingListsCreated");
+        shoppingListsCreatedStats.setSummary(model.getShoppingListsCreated());
+
+        Preference numTimesStartedStats = findPreference("timesStarted");
+        numTimesStartedStats.setSummary(model.getNumTimesStarted());
     }
 }

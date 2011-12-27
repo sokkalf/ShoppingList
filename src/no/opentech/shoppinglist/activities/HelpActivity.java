@@ -27,7 +27,6 @@ import android.os.Bundle;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import no.opentech.shoppinglist.R;
 
 /**
  * Created by: Christian Lønaas
@@ -37,7 +36,7 @@ import no.opentech.shoppinglist.R;
 public class HelpActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WebView browser = new WebView(this); //(WebView)findViewById(R.id.helpview);
+        WebView browser = new WebView(this);
         setContentView(browser);
         browser.setWebViewClient(new WebViewClient());
 

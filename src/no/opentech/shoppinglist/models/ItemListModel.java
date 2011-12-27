@@ -25,7 +25,6 @@ package no.opentech.shoppinglist.models;
 import no.opentech.shoppinglist.adapters.ItemAdapter;
 import no.opentech.shoppinglist.entities.Item;
 import no.opentech.shoppinglist.entities.ShoppingList;
-import no.opentech.shoppinglist.file.JSONHandler;
 import no.opentech.shoppinglist.utils.Logger;
 import no.opentech.shoppinglist.utils.Utils;
 

@@ -41,6 +41,7 @@ import no.opentech.shoppinglist.ShoppingListApp;
 import no.opentech.shoppinglist.adapters.ViewShoppingListAdapter;
 import no.opentech.shoppinglist.entities.ShoppingList;
 import no.opentech.shoppinglist.models.ViewShoppingListsModel;
+import no.opentech.shoppinglist.utils.Statistics;
 import no.opentech.shoppinglist.utils.Utils;
 
 import java.util.Date;
@@ -111,6 +112,7 @@ public class ViewShoppingListsActivity extends ListActivity {
                 }
                 break;
         }
+        Statistics.saveStats();
     }
 
     /* create the menu */

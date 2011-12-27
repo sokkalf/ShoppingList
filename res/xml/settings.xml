@@ -18,4 +18,13 @@
         <Preference android:key="importItems" android:title="Import"
                     android:summary="Import items from SD-card"/>
     </PreferenceCategory>
+    <PreferenceCategory android:title="Statistics" android:summary="App statistics">
+        <Preference android:key="resetStats" android:title="Reset statistics" />
+        <Preference android:key="timesStarted" android:title="Times started"
+                    android:summary="0"/>
+        <Preference android:key="shoppingListsCreated" android:title="Shopping lists created"
+                    android:summary="0"/>
+        <Preference android:key="itemsChecked" android:title="Items checked off"
+                    android:summary="0"/>
+    </PreferenceCategory>
 </PreferenceScreen>

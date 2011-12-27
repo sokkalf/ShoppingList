@@ -27,6 +27,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import no.opentech.shoppinglist.utils.Logger;
+import no.opentech.shoppinglist.utils.Statistics;
 
 /**
  * Created by: Christian Lønaas
@@ -47,8 +48,17 @@ public class ShoppingListApp extends Application {
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         setDateFormat(settings.getString("dateFormat", "dd.MM.yyyy HH:mm"));
         setShakeSensitivity(Integer.parseInt(settings.getString("shakeSensitivity", "5")));
+        Statistics.setNumTimesStarted(settings.getInt("numTimesStarted", 0));
+        Statistics.incrementNumTimesStarted();
+        Statistics.setShoppingListsCreated(settings.getInt("shoppingListsCreated", 0));
+        Statistics.setItemsCheckedOff(settings.getInt("itemsCheckedOff", 0));
         log.debug("Loading shared preferences");
         super.onCreate();
+    }
+
+    @Override
+    public void onTerminate() {
+
     }
     
     public ShoppingListApp() {
