@@ -47,6 +47,10 @@ public class Statistics {
         setItemsCheckedOff(getItemsCheckedOff() + 1);
     }
 
+    public static void decrementItemsCheckedOff() {
+        setItemsCheckedOff(getItemsCheckedOff() - 1);
+    }
+
     public static int getNumTimesStarted() {
         return numTimesStarted;
     }

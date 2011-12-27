@@ -41,6 +41,7 @@ import no.opentech.shoppinglist.adapters.ShoppingListAdapter;
 import no.opentech.shoppinglist.entities.Item;
 import no.opentech.shoppinglist.models.ShoppingListModel;
 import no.opentech.shoppinglist.utils.Logger;
+import no.opentech.shoppinglist.utils.Statistics;
 
 import java.util.ArrayList;
 
@@ -94,10 +95,12 @@ public class ShoppingListActivity extends ListActivity {
                     numInLine++;
                     selectedItem.setChecked(true);
                     selectedItem.setNumberInLine(numInLine);
+                    Statistics.incrementItemsCheckedOff();
                 } else {
                     selectedItem.setChecked(false);
                     selectedItem.setNumberInLine(0);
                     numInLine--;
+                    Statistics.decrementItemsCheckedOff();
                 }
                 update();
             }

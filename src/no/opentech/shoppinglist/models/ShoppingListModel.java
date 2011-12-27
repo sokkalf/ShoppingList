@@ -25,12 +25,9 @@ package no.opentech.shoppinglist.models;
 import no.opentech.shoppinglist.adapters.ShoppingListAdapter;
 import no.opentech.shoppinglist.entities.Item;
 import no.opentech.shoppinglist.entities.ShoppingList;
-import no.opentech.shoppinglist.utils.Statistics;
 import no.opentech.shoppinglist.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by: Christian Lønaas
@@ -97,7 +94,6 @@ public class ShoppingListModel {
 
     public void updateNumbersAndDeleteList() {
         updateNumbers();
-        for(Item i : getShoppingListItems()) Statistics.incrementItemsCheckedOff();
         deleteList();
     }
     
@@ -109,7 +105,6 @@ public class ShoppingListModel {
         
         for(Item i : itemsToRemove) {
             removeItem(i);
-            Statistics.incrementItemsCheckedOff();
         }
     }
 
