@@ -116,6 +116,10 @@ public class Item implements Serializable, Parcelable {
         this.usageCounter++;
     }
 
+    public void decrementUsageCounter() {
+        this.usageCounter--;
+    }
+
     public Date getFirstSeen() {
         return firstSeen;
     }

@@ -251,19 +251,6 @@ public class ItemListActivity extends ListActivity
         Toast.makeText(context,((deleted != 0) ? "Deleted " + deleted + " items" : "No items deleted"), Toast.LENGTH_SHORT).show();
     }
 
-    public void exportItems() {
-        if(!model.exportItems())
-            Toast.makeText(context, "Couldn't write export file", Toast.LENGTH_SHORT);
-        else Toast.makeText(context, "Export written to " + Environment.getExternalStorageDirectory().getAbsolutePath() + Utils.FILEROOT + 
-                Utils.BACKUPFILE, Toast.LENGTH_SHORT);
-    }
-
-    public void importItems() {
-        if(model.importItems()) {
-            Toast.makeText(context, "Items imported", Toast.LENGTH_SHORT);
-        } else Toast.makeText(context, "Error importing", Toast.LENGTH_SHORT);
-    }
-
     public void clearList() {
         model.clearCheckedItems();
     }

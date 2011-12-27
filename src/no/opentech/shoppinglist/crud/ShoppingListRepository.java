@@ -160,7 +160,8 @@ public class ShoppingListRepository {
     public void addItemToShoppingList(Item i, ShoppingList sl, int amount) {
         Long slId = sl.getId(), iId = i.getId();
         if((null == iId) || (null == slId)) throw new IllegalArgumentException("Item ID and ShoppingList ID are required");
-        
+
+        log.debug("Adding item '" + i.getName() + "' to shopping list '" + sl.getName() + "'");
         String sql = "INSERT INTO listitem (listid, itemid, amount) VALUES (" + slId + "," + iId + "," + amount + ");";
         dBHelper.getWritableDatabase().execSQL(sql);
         dBHelper.close();
@@ -169,8 +170,20 @@ public class ShoppingListRepository {
     public void removeItemFromShoppingList(Item i, ShoppingList sl) {
         Long slId = sl.getId(), iId = i.getId();
         if((null == iId) || (null == slId)) throw new IllegalArgumentException("Item ID and ShoppingList ID are required");
-        
+
+        log.debug("Removing item '" + i.getName() + "' from shopping list '" + sl.getName() + "'");
         String sql = "DELETE FROM listitem WHERE listid = " + slId + " AND itemid = " + iId + ";";
+        dBHelper.getWritableDatabase().execSQL(sql);
+        dBHelper.close();
+    }
+    
+    public void emptyShoppingList(ShoppingList sl) {
+        long id = sl.getId();
+        for(Item i : getShoppingListItems(sl)) {
+            i.decrementUsageCounter();
+            Utils.getItemRepository().update(i);
+        }
+        String sql = "DELETE FROM listitem WHERE listid = " + id + ";";
         dBHelper.getWritableDatabase().execSQL(sql);
         dBHelper.close();
     }

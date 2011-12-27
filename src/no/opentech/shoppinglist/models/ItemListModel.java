@@ -41,8 +41,10 @@ public class ItemListModel {
     private ItemAdapter adapter;
     private static Logger log = Logger.getLogger(ItemListModel.class);
     private boolean multiDelete = false;
+    private ArrayList<Item> initiallyCheckedItems;
     
     public ItemListModel(long shoppingListId) {
+        initiallyCheckedItems = new ArrayList<Item>();
         if(shoppingListId == 0)
             itemList = Utils.getItemRepository().getItemsOrderedByName();
         else {
@@ -60,6 +62,7 @@ public class ItemListModel {
                 updatedItem.setChecked(true);
                 updatedItem.setAmount(i.getAmount());
             }
+            initiallyCheckedItems.addAll(selectedItems);
         }
     }
 
@@ -104,31 +107,6 @@ public class ItemListModel {
         Utils.getItemRepository().delete(item);
         if (!multiDelete) update();
     }
-
-    @Deprecated
-    public boolean exportItems() {
-        JSONHandler j = new JSONHandler();
-        String json = j.createJSONFromItemList(itemList);
-        return Utils.writeFileToSDCard(Utils.BACKUPFILE, json);
-    }
-
-    @Deprecated
-    public boolean importItems() {
-        String json = Utils.readFileFromSDCard(Utils.BACKUPFILE);
-        if(null != json) {
-            JSONHandler j = new JSONHandler();
-            ArrayList<Item> importedItems = j.createItemListFromJSON(json);
-            for(Item i : importedItems) {
-                log.debug(i.getName() + " read from import");
-                long id = Utils.getItemRepository().insert(i);
-                i.setId(id);
-                addItem(i);
-            }
-            update();
-            return true;
-        }
-        return false;
-    }
     
     public ArrayList<Item> getCheckedItems() {
         ArrayList<Item> checkedItems = new ArrayList<Item>();
@@ -145,10 +123,21 @@ public class ItemListModel {
     
     public void save(long shoppingListId) {
         ShoppingList sl = Utils.getShoppingListRepository().getShoppingListById(shoppingListId);
+
         for(Item item : getCheckedItems()) {
-            item.incrementUsageCounter();
-            Utils.getItemRepository().update(item);
-            if(!sl.getItems().contains(item)) Utils.getShoppingListRepository().addItemToShoppingList(item, sl);
+            if(!sl.getItems().contains(item)) {
+                item.incrementUsageCounter();
+                Utils.getItemRepository().update(item);
+                Utils.getShoppingListRepository().addItemToShoppingList(item, sl);
+            }
+        }
+
+        for(Item i : initiallyCheckedItems) {
+            if((sl.getItems().contains(i)) && (!getCheckedItems().contains(i))) {
+                i.decrementUsageCounter();
+                Utils.getItemRepository().update(i);
+                Utils.getShoppingListRepository().removeItemFromShoppingList(i, sl);
+            }
         }
     }
 
