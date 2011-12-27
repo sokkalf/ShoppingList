@@ -1,6 +1,6 @@
 ShoppingList/ItemList:
 
 Other:
-add some statistics
 replace hardcoded strings with values in strings.xml
 handle database upgrades
+write help/about text
