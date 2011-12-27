@@ -1,4 +1,36 @@
-Shopping list for Android.. work in progress
+ShoppingList - Shopping list for Android
+  (C) 2011, 2012 by Christian Lønaas
+  christian dot lonaas at discombobulator dot org
 
-testing 1, 2, 3..
+  http://github.com/sokkalf/ShoppingList
+
+================================================================================
+1. Overview
+================================================================================
+ShoppingList is an easy to use shopping list for Android.
+
+It tries to be "smart", and remembers how many times you have used an item, and
+in what order you pick up items in the store. This way it can present a list
+with items in the order that is most likely that the items will appear in the
+store.
+
+================================================================================
+2. Features
+================================================================================
+
+- Multiple shopping lists
+- Add/remove items
+- Import/export items to SD-card
+- "shake" the phone to remove checked items from the list
+- item statistics to optimize ordering in lists
+- search in lists by pressing the "search"-button
+- adjustable sensitivity for "shake-to-clear"
+- adjustable date format
+
+================================================================================
+3. License
+================================================================================
+
+ShoppingList is licensed under the GPLv3.
+A file with the license, "LICENSE" is included with the source distribution.
 
