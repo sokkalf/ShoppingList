@@ -12,6 +12,7 @@
     <string name="menu_manageitems">Manage items</string>
     <string name="menu_development">Development options</string>
     <string name="menu_settings">Settings</string>
+    <string name="menu_help">Help/About</string>
     <string name="menu_deleteselected">Delete selected items</string>
     <string name="menu_preferences_label">Preferences</string>
     <string name="menu_dialog_label">Dialog Picker</string>

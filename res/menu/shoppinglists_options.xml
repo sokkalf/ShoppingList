@@ -4,4 +4,5 @@
     <item android:id="@+id/newlist" android:icon="@drawable/newlist" android:title="@string/menu_newlist" />
     <item android:id="@+id/manageitems" android:icon="@drawable/manage" android:title="@string/menu_manageitems" />
     <item android:id="@+id/settings" android:icon="@drawable/settings" android:title="@string/menu_settings"/>
+    <item android:id="@+id/help" android:icon="@drawable/help" android:title="@string/menu_help"/>
 </menu>

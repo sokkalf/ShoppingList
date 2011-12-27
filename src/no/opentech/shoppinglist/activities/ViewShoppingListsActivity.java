@@ -133,6 +133,9 @@ public class ViewShoppingListsActivity extends ListActivity {
             case R.id.settings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
+            case R.id.help:
+                startActivity(new Intent(this, HelpActivity.class));
+                break;
         }
         return true;
     }
