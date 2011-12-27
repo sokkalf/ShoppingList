@@ -29,6 +29,8 @@ import no.opentech.shoppinglist.utils.Statistics;
 import no.opentech.shoppinglist.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by: Christian Lønaas
@@ -76,7 +78,6 @@ public class ShoppingListModel {
     }
     
     public void removeItem(Item item) {
-        if(item.isChecked()) Statistics.incrementItemsCheckedOff();
         getShoppingListItems().remove(item);
         Utils.getShoppingListRepository().removeItemFromShoppingList(item, shoppingList);
     }
@@ -90,13 +91,13 @@ public class ShoppingListModel {
             if(item.getUsageCounter() < 1) item.setAvgNumberInLine(item.getAvgNumberInLine() + item.getNumberInLine() / 2);
             else item.setAvgNumberInLine(item.getNumberInLine());
 
-            Statistics.incrementItemsCheckedOff();
             Utils.getItemRepository().update(item);
         }
     }
 
     public void updateNumbersAndDeleteList() {
         updateNumbers();
+        for(Item i : getShoppingListItems()) Statistics.incrementItemsCheckedOff();
         deleteList();
     }
     
@@ -106,7 +107,10 @@ public class ShoppingListModel {
             if(i.isChecked()) itemsToRemove.add(i);
         }
         
-        for(Item i : itemsToRemove) removeItem(i);
+        for(Item i : itemsToRemove) {
+            removeItem(i);
+            Statistics.incrementItemsCheckedOff();
+        }
     }
 
     public void hideCheckedItems() {
