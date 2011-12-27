@@ -59,6 +59,8 @@ public class ViewShoppingListsActivity extends ListActivity {
     
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Statistics.saveStats(); // save statistics on load of startup activity
+
         setTitle("Shopping lists");
         model = new ViewShoppingListsModel();
 
