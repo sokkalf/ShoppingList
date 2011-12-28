@@ -3,17 +3,66 @@
 <head>
     <meta charset="utf-8"/>
     <title>ShoppingList Help</title>
+    <style>
+        nav {
+            background-color: #0000bb;
+            display: block;
+            margin: 0 auto 20px;
+            border: 1px solid #222;
+            position: absolute;
+            font-size: 16px;
+            top: 0;
+        }
+        nav ul {
+            padding: 0;
+            margin: 0;
+        }
+        nav li {
+            position: relative;
+            float: left;
+            list-style-type: none;
+        }
+        nav ul:after {
+            content: ".";
+            display: block;
+            height: 0;
+            clear: both;
+            visibility: hidden;
+        }
+        nav li a {
+            display: block;
+            padding: 10px 20px;
+            border-left: 1px solid #999;
+            border-right: 1px solid #222;
+            color: #eee;
+            text-decoration: none;
+        }
+        header {
+            position: relative;
+            top: 50px;
+        }
+        header img {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
 </head>
 <body>
 <header>
+    <img src="grocery_bag.png" alt="shoppinglist"/>
     <h1>ShoppingList</h1>
-
     <h2>Shopping list for Android</h2>
-
+    <h3>Version 0.4.8</h3>
     <p><em>&copy;2011, 2012 by <a href="mailto:christian.lonaas@discombobulator.org">Christian Lønaas</a></em></p>
     <a href="https://github.com/sokkalf/ShoppingList">https://github.com/sokkalf/ShoppingList</a>
 </header>
-<p>Testing, 1, 2, 3...</p>
-<a href="about.html">About</a>
+<nav id="menu">
+    <ul>
+        <li><a href="about.html">About</a></li>
+        <li><a href="features.html">Features</a></li>
+        <li><a href="license.html">License</a></li>
+    </ul>
+</nav>
 </body>
 </html>

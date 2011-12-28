@@ -26,6 +26,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -36,9 +37,11 @@ import android.webkit.WebViewClient;
  * Time: 13:42
  */
 public class HelpActivity extends Activity {
+    private WebView browser;
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WebView browser = new WebView(this);
+        browser = new WebView(this);
         setContentView(browser);
         browser.setWebViewClient(new WebViewClient() {
             @Override
@@ -63,6 +66,18 @@ public class HelpActivity extends Activity {
         settings.setJavaScriptEnabled(true);
 
         browser.loadUrl("file:///android_asset/helpindex.html");
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // Check if the key event was the BACK key and if there's history
+        if ((keyCode == KeyEvent.KEYCODE_BACK) && browser.canGoBack()) {
+            browser.goBack();
+            return true;
+        }
+        // If it wasn't the BACK key or there's no web page history, bubble up to the default
+        // system behavior (probably exit the activity)
+        return super.onKeyDown(keyCode, event);
     }
 
 

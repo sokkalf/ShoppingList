@@ -24,10 +24,7 @@ CREATE TABLE list (
 );
 
 INSERT INTO item (name, description, usages, avgNumberInLine, firstseen, lastseen)
-  VALUES ('Bananer', 'Den nest beste frukten', 0, 0, 0, 0);
+  VALUES ('Bananas', 'Second best fruit', 0, 0, 0, 0);
 
 INSERT INTO item (name, description, usages, avgNumberInLine, firstseen, lastseen)
-  VALUES ('Lime', 'Den beste frukten', 0, 0, 0, 0);
-
-INSERT INTO item (name, description, usages, avgNumberInLine, firstseen, lastseen)
-  VALUES ('Børst', 'Essensielt', 0, 0, 0, 0);
+  VALUES ('Lime', 'The best fruit', 0, 0, 0, 0);
