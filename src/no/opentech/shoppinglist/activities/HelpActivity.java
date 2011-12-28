@@ -46,7 +46,13 @@ public class HelpActivity extends Activity {
                 if(url.startsWith("http")) { // if the url is "external", launch in real browser
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                     startActivity(browserIntent);
-                } else { // if not, load it in the WebView
+                } else if(url.startsWith("mailto:")){ // handle mail
+                    url = url.replaceFirst("mailto:", "");
+                    url = url.trim();
+                    Intent i = new Intent(Intent.ACTION_SEND);
+                    i.setType("plain/text").putExtra(Intent.EXTRA_EMAIL, new String[]{url});
+                    startActivity(i);
+                } else { // if not external or mail, load it in the WebView
                     view.loadUrl(url);
                 }
                 return true;
