@@ -1,4 +1,5 @@
 ShoppingList/ItemList:
+rename shopping lists/items
 
 Other:
 replace hardcoded strings with values in strings.xml
