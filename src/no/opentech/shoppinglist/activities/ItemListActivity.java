@@ -168,6 +168,9 @@ public class ItemListActivity extends ListActivity
             case R.id.setitemamount:
                 setItemAmount(selectedItem);
                 break;
+            case R.id.renameitem:
+                editItem(selectedItem);
+                break;
             case R.id.removeitem:
                 removeItem(selectedItem);
                 break;
@@ -217,6 +220,35 @@ public class ItemListActivity extends ListActivity
 		alert.show();
 
     }
+
+    public void editItem(final Item item) {
+        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        final EditText input = new EditText(this);
+        input.setWidth(200); // TODO: hard coded width is bad
+        input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+        input.setHint("Enter a new name");
+        input.setText(item.getName());
+        input.setSelection(0, item.getName().length());
+        alert.setTitle("Edit item name");
+        alert.setView(input);
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String newName = input.getText().toString().trim();
+                if(!newName.equals("")) {
+                    model.renameItem(item, newName);
+                }
+            }
+        });
+
+        alert.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.cancel();
+                    }
+                });
+        alert.show();
+
+    }    
     
     public void setItemAmount(final Item item) {
         NumberPickerDialog picker = new NumberPickerDialog(this, android.R.style.Theme_Dialog, 1);

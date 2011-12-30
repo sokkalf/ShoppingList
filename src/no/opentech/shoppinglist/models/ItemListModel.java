@@ -84,6 +84,12 @@ public class ItemListModel {
         update();
     }
     
+    public void renameItem(Item item, String name) {
+        item.setName(name);
+        Utils.getItemRepository().update(item);
+        update();
+    }
+    
     public void removeItems(ArrayList<Item> items) {
         multiDelete = true; // prevent update() from being called for each item
         for(Item i : items) {
