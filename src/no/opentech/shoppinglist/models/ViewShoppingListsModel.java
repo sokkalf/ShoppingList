@@ -55,6 +55,10 @@ public class ViewShoppingListsModel {
         return shoppingLists.get(pos);
     }
 
+    public void updateShoppingList(ShoppingList sl) {
+        Utils.getShoppingListRepository().update(sl);
+    }
+    
     public void deleteShoppingListById(long id) {
         ShoppingList shoppingListToDelete=null;
         Utils.getShoppingListRepository().deleteById(id);

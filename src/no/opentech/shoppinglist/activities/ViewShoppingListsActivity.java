@@ -168,6 +168,13 @@ public class ViewShoppingListsActivity extends ListActivity {
                     Toast.makeText(context, "No details available", Toast.LENGTH_SHORT).show();
                 }
                 break;
+            case R.id.renameshoppinglist:
+                if(!selectedItem.isDefaultList()) {
+                    editShoppingList(selectedItem);
+                } else {
+                    Toast.makeText(context, "Can't rename this", Toast.LENGTH_SHORT).show();
+                }
+                break;
             case R.id.deleteshoppinglist:
                 if(selectedItem.isDefaultList())
                     Toast.makeText(context, "Can't delete this", Toast.LENGTH_SHORT).show();
@@ -227,6 +234,40 @@ public class ViewShoppingListsActivity extends ListActivity {
                 });
         alert.show();
 
+    }
+
+    public void editShoppingList(final ShoppingList sl) {
+        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        final EditText input = new EditText(this);
+        input.setWidth(200); // TODO: hard coded width is bad
+        input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+        alert.setTitle("Type a new name");
+        String text = sl.getName();
+        input.setText(text);
+        input.setSelection(0, text.length());
+        alert.setView(input);
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String newName = input.getText().toString().trim();
+                if(!newName.equals("")) {
+                    renameShoppingList(newName, sl);
+                    update();
+                }
+            }
+        });
+
+        alert.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.cancel();
+                    }
+                });
+        alert.show();
+
+    }
+    public void renameShoppingList(String newName, ShoppingList sl) {
+        sl.setName(newName);
+        model.updateShoppingList(sl);
     }
     
     public void deleteShoppingList(ShoppingList sl) {

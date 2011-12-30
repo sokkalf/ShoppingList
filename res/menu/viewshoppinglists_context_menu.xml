@@ -2,5 +2,6 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/viewshoppinglistdetails" android:title="Show details" />
+    <item android:id="@+id/renameshoppinglist" android:title="Rename"/>
     <item android:id="@+id/deleteshoppinglist" android:title="Delete"/>
 </menu>

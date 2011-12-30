@@ -37,7 +37,7 @@ import no.opentech.shoppinglist.utils.Statistics;
 public class ShoppingListApp extends Application {
     public static final String APP_NAME = "ShoppingList";
     public static final String PREFS_NAME = "ShoppingListSettings";
-    private static final boolean DEVELOPMENT_VERSION = false;
+    private static final boolean DEVELOPMENT_VERSION = true;
     private static ShoppingListApp instance;
     private static Logger log = Logger.getLogger(ShoppingListApp.class);
     public static String dateFormat;
