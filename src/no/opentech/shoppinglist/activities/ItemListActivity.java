@@ -198,6 +198,7 @@ public class ItemListActivity extends ListActivity
         input.setWidth(200); // TODO: hard coded width is bad
         input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         input.setHint("Enter name for the item");
+        input.setFocusable(true);
         alert.setTitle("Item name");
         alert.setView(input);
 		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -217,8 +218,17 @@ public class ItemListActivity extends ListActivity
 						dialog.cancel();
 					}
 				});
-		alert.show();
 
+        final AlertDialog dialog = alert.create();
+        input.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            public void onFocusChange(View view, boolean hasFocus) {
+                if(hasFocus)
+                    dialog.getWindow().setSoftInputMode( WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+
+            }
+        });
+
+        dialog.show();
     }
 
     public void editItem(final Item item) {
